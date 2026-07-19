@@ -253,7 +253,7 @@ function onFrameLoad() {
   try {
     var doc = document.getElementById('report-frame').contentDocument;
     var s = doc.createElement('style');
-    s.textContent = '.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}table{min-width:520px}';
+    s.textContent = 'html,body{overflow-x:hidden!important;box-sizing:border-box}body{padding:0 24px!important}.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}table{min-width:520px}.container{max-width:1180px!important;width:auto!important;margin:0 auto!important;padding:24px 0 56px!important}';
     doc.head.appendChild(s);
   } catch(e) {}
 }
