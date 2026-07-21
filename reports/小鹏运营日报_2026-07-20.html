@@ -40,7 +40,9 @@ td{color:var(--ink)}
 .core-table th:nth-child(3){width:11%}.core-table th:nth-child(4){width:10%}
 .core-table th:nth-child(5){width:11%}.core-table th:nth-child(6){width:11%}
 .core-table th:nth-child(7){width:14%}.core-table th:nth-child(8){width:15%}
-.struct-table th:nth-child(1){width:22%}
+.struct-table th:nth-child(1){width:18%}
+.struct-table th:nth-child(2){width:14%}
+.struct-table th:nth-child(n+3){width:17%}
 .daily-table th:nth-child(1){width:25%}.daily-table th:last-child{width:10%}
 
 .core-table th:first-child,.core-table td:first-child,
@@ -157,18 +159,75 @@ tr.summary td:not(:first-child){font-weight:600;background:var(--surface)}
   <table class="struct-table">
     <thead><tr>
       <th>站点</th>
+      <th class="num">总电量</th>
       <th class="num">小鹏渠道电量</th><th class="num">三方渠道电量</th>
       <th class="num">免费电量</th><th class="num">付费电量</th>
     </tr></thead>
     <tbody>
-      <tr><td>全部站点（汇总）（42枪）</td><td class="num">8999.88度 <span style="color:var(--tertiary);font-size:11px">占总量74.2%</span></td><td class="num">3127.00度 <span style="color:var(--tertiary);font-size:11px">25.8%</span></td><td class="num">1901.50度 <span style="color:var(--tertiary);font-size:11px">占总量15.7%</span></td><td class="num">10225.37度 <span style="color:var(--tertiary);font-size:11px">占总量84.3%</span></td></tr>
-      <tr><td>南大干线（4枪）</td><td class="num">746.42度 <span style="color:var(--tertiary);font-size:11px">占总量30.0%</span></td><td class="num">1741.11度 <span style="color:var(--tertiary);font-size:11px">70.0%</span></td><td class="num">420.43度 <span style="color:var(--tertiary);font-size:11px">占总量16.9%</span></td><td class="num">2067.09度 <span style="color:var(--tertiary);font-size:11px">占总量83.1%</span></td></tr>
-      <tr><td>恒兆广场（4枪）</td><td class="num">1551.70度 <span style="color:var(--tertiary);font-size:11px">占总量92.8%</span></td><td class="num">120.97度 <span style="color:var(--tertiary);font-size:11px">7.2%</span></td><td class="num">367.11度 <span style="color:var(--tertiary);font-size:11px">占总量21.9%</span></td><td class="num">1305.56度 <span style="color:var(--tertiary);font-size:11px">占总量78.1%</span></td></tr>
-      <tr><td>时代天境（6枪）</td><td class="num">967.72度 <span style="color:var(--tertiary);font-size:11px">占总量85.7%</span></td><td class="num">161.86度 <span style="color:var(--tertiary);font-size:11px">14.3%</span></td><td class="num">312.49度 <span style="color:var(--tertiary);font-size:11px">占总量27.7%</span></td><td class="num">817.09度 <span style="color:var(--tertiary);font-size:11px">占总量72.3%</span></td></tr>
-      <tr><td>广花国际（6枪）</td><td class="num">1761.76度 <span style="color:var(--tertiary);font-size:11px">占总量92.8%</span></td><td class="num">137.62度 <span style="color:var(--tertiary);font-size:11px">7.2%</span></td><td class="num">238.47度 <span style="color:var(--tertiary);font-size:11px">占总量12.6%</span></td><td class="num">1660.90度 <span style="color:var(--tertiary);font-size:11px">占总量87.4%</span></td></tr>
-      <tr><td>青创园（10枪）</td><td class="num">1101.55度 <span style="color:var(--tertiary);font-size:11px">占总量68.3%</span></td><td class="num">510.33度 <span style="color:var(--tertiary);font-size:11px">31.7%</span></td><td class="num">142.76度 <span style="color:var(--tertiary);font-size:11px">占总量8.9%</span></td><td class="num">1469.13度 <span style="color:var(--tertiary);font-size:11px">占总量91.1%</span></td></tr>
-      <tr><td>百事高（6枪）</td><td class="num">1151.30度 <span style="color:var(--tertiary);font-size:11px">占总量75.2%</span></td><td class="num">380.35度 <span style="color:var(--tertiary);font-size:11px">24.8%</span></td><td class="num">238.26度 <span style="color:var(--tertiary);font-size:11px">占总量15.6%</span></td><td class="num">1293.38度 <span style="color:var(--tertiary);font-size:11px">占总量84.4%</span></td></tr>
-      <tr><td>超充时光启点（6枪）</td><td class="num">1719.43度 <span style="color:var(--tertiary);font-size:11px">占总量95.8%</span></td><td class="num">74.76度 <span style="color:var(--tertiary);font-size:11px">4.2%</span></td><td class="num">181.97度 <span style="color:var(--tertiary);font-size:11px">占总量10.1%</span></td><td class="num">1612.21度 <span style="color:var(--tertiary);font-size:11px">占总量89.9%</span></td></tr>
+      <tr>
+  <td>全部站点（汇总）（42枪）</td>
+  <td class="num"><b>12126.87度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">8999.88度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 74.2%</div></td>
+  <td class="num">3127.00度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 25.8%</div></td>
+  <td class="num">1901.50度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 15.7%</div></td>
+  <td class="num">10225.37度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 84.3%</div></td>
+</tr>
+      <tr>
+  <td>南大干线（4枪）</td>
+  <td class="num"><b>2487.53度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">746.42度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 30.0%</div></td>
+  <td class="num">1741.11度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 70.0%</div></td>
+  <td class="num">420.43度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 16.9%</div></td>
+  <td class="num">2067.09度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 83.1%</div></td>
+</tr>
+      <tr>
+  <td>恒兆广场（4枪）</td>
+  <td class="num"><b>1672.67度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1551.70度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 92.8%</div></td>
+  <td class="num">120.97度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 7.2%</div></td>
+  <td class="num">367.11度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 21.9%</div></td>
+  <td class="num">1305.56度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 78.1%</div></td>
+</tr>
+      <tr>
+  <td>时代天境（6枪）</td>
+  <td class="num"><b>1129.58度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">967.72度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 85.7%</div></td>
+  <td class="num">161.86度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 14.3%</div></td>
+  <td class="num">312.49度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 27.7%</div></td>
+  <td class="num">817.09度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 72.3%</div></td>
+</tr>
+      <tr>
+  <td>广花国际（6枪）</td>
+  <td class="num"><b>1899.38度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1761.76度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 92.8%</div></td>
+  <td class="num">137.62度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 7.2%</div></td>
+  <td class="num">238.47度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 12.6%</div></td>
+  <td class="num">1660.90度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 87.4%</div></td>
+</tr>
+      <tr>
+  <td>青创园（10枪）</td>
+  <td class="num"><b>1611.89度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1101.55度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 68.3%</div></td>
+  <td class="num">510.33度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 31.7%</div></td>
+  <td class="num">142.76度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 8.9%</div></td>
+  <td class="num">1469.13度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 91.1%</div></td>
+</tr>
+      <tr>
+  <td>百事高（6枪）</td>
+  <td class="num"><b>1531.65度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1151.30度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 75.2%</div></td>
+  <td class="num">380.35度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 24.8%</div></td>
+  <td class="num">238.26度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 15.6%</div></td>
+  <td class="num">1293.38度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 84.4%</div></td>
+</tr>
+      <tr>
+  <td>超充时光启点（6枪）</td>
+  <td class="num"><b>1794.19度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1719.43度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 95.8%</div></td>
+  <td class="num">74.76度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 4.2%</div></td>
+  <td class="num">181.97度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 10.1%</div></td>
+  <td class="num">1612.21度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 89.9%</div></td>
+</tr>
     </tbody>
   </table>
   </div>
@@ -198,7 +257,7 @@ tr.summary td:not(:first-child){font-weight:600;background:var(--surface)}
 <div style="margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--tertiary);font-size:12px">
   公式校验: 9/9 |
   商户汇总: 2/2 |
-  生成时间: 2026-07-21T03:23:13.048Z
+  生成时间: 2026-07-21T03:34:43.716Z
 </div>
 </div>
 
