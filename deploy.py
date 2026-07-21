@@ -19,6 +19,7 @@ import re
 SRC_DIR = "/Users/apple/WorkBuddy/小鹏运营日报/outputs"
 PROJECT_DIR = "/Users/apple/WorkBuddy/小鹏日报看板"
 REPORTS_DIR = os.path.join(PROJECT_DIR, "reports")
+START_DATE = "2026-07-20"  # 只同步此日期及之后的日报
 
 WEEKDAY_MAP = {0: "一", 1: "二", 2: "三", 3: "四", 4: "五", 5: "六", 6: "日"}
 
@@ -33,8 +34,12 @@ def main():
     # === 第一步：从源文件夹复制新日报 ===
     new_count = 0
     for fname in os.listdir(SRC_DIR):
-        if not re.match(r"小鹏运营日报_\d{4}-\d{2}-\d{2}\.html", fname):
+        m = re.match(r"小鹏运营日报_(\d{4}-\d{2}-\d{2})\.html", fname)
+        if not m:
             continue
+        date_str = m.group(1)
+        if date_str < START_DATE:
+            continue  # 早于起始日期，跳过
         src = os.path.join(SRC_DIR, fname)
         dst = os.path.join(REPORTS_DIR, fname)
         if os.path.exists(dst):
