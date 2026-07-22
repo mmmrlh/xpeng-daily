@@ -31,8 +31,9 @@ def main():
 
     os.makedirs(REPORTS_DIR, exist_ok=True)
 
-    # === 第一步：从源文件夹复制新日报 ===
+    # === 第一步：从源文件夹复制新/更新的日报 ===
     new_count = 0
+    update_count = 0
     for fname in os.listdir(SRC_DIR):
         m = re.match(r"小鹏运营日报_(\d{4}-\d{2}-\d{2})\.html", fname)
         if not m:
@@ -43,15 +44,27 @@ def main():
         src = os.path.join(SRC_DIR, fname)
         dst = os.path.join(REPORTS_DIR, fname)
         if os.path.exists(dst):
-            continue  # 已存在，跳过
-        shutil.copy2(src, dst)
-        new_count += 1
-        print(f"   🆕 新增: {fname}")
+            src_mtime = os.path.getmtime(src)
+            dst_mtime = os.path.getmtime(dst)
+            if src_mtime <= dst_mtime:
+                continue  # 源文件未更新，跳过
+            shutil.copy2(src, dst)
+            update_count += 1
+            print(f"   🔄 更新: {fname}")
+        else:
+            shutil.copy2(src, dst)
+            new_count += 1
+            print(f"   🆕 新增: {fname}")
 
-    if new_count == 0:
-        print(f"   — 没有新日报需要同步")
+    if new_count == 0 and update_count == 0:
+        print("   — 没有新日报需要同步")
     else:
-        print(f"   共复制 {new_count} 个新日报")
+        parts = []
+        if new_count > 0:
+            parts.append(f"{new_count} 个新增")
+        if update_count > 0:
+            parts.append(f"{update_count} 个更新")
+        print(f"   共同步 {'、'.join(parts)}")
 
     # === 第二步：扫描 reports/ 目录，生成 data.json ===
     reports = []
