@@ -30,4 +30,6 @@
 1. 每日 9:00 触发 automation
 2. 运行 deploy.py 同步新日报
 3. git add/commit/push 到 GitHub
+   - ⚠️ git push 时需 unset 代理环境变量（`HTTP_PROXY`/`HTTPS_PROXY` 等），否则 ClashX 代理会干扰 TLS 握手导致 `SSL_ERROR_SYSCALL`
+   - credential 通过 macOS keychain (osxkeychain) 自动提供
 4. GitHub Pages 自动部署
