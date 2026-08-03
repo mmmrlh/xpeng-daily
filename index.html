@@ -36,6 +36,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .date-item .weekday{font-size:10px;color:#9ca3af;margin-top:1px}
 .date-item.active .date-str{color:#1a56db}
 .date-item .badge-today{font-size:9px;background:#dbeafe;color:#1a56db;padding:2px 7px;border-radius:8px;font-weight:600;margin-left:auto;flex-shrink:0}
+.date-item .badge-monthly{font-size:9px;background:#fef3c7;color:#92400e;padding:2px 7px;border-radius:8px;font-weight:600;margin-left:auto;flex-shrink:0}
+.date-item .dot-monthly{background:#f59e0b}
 .no-results{padding:40px 20px;text-align:center;color:#9ca3af;font-size:13px}
 
 /* ========== 右侧主区域 ========== */
@@ -228,7 +230,13 @@ async function init() {
     reports = [];
   }
 
-  document.getElementById('report-count').textContent = '共 ' + reports.length + ' 份日报';
+  var dailyCount = reports.filter(function(r) { return r.type !== 'monthly'; }).length;
+  var monthlyCount = reports.filter(function(r) { return r.type === 'monthly'; }).length;
+  var countText = '共 ' + dailyCount + ' 份日报';
+  if (monthlyCount > 0) {
+    countText += ' + ' + monthlyCount + ' 份月报';
+  }
+  document.getElementById('report-count').textContent = countText;
   renderDateList();
 
   if (reports.length > 0) {
@@ -245,7 +253,10 @@ function renderDateList(filter) {
   if (filter) {
     var f = filter.toLowerCase();
     filtered = reports.filter(function(r) {
-      return r.date.indexOf(f) !== -1 || r.weekday.indexOf(f) !== -1;
+      return r.date.indexOf(f) !== -1 ||
+        (r.weekday && r.weekday.indexOf(f) !== -1) ||
+        (r.label && r.label.indexOf(f) !== -1) ||
+        (r.type === 'monthly' && '月报'.indexOf(f) !== -1);
     });
   }
 
@@ -257,14 +268,18 @@ function renderDateList(filter) {
   list.innerHTML = filtered.map(function(r) {
     var origIndex = reports.indexOf(r);
     var isToday = r.date === todayStr;
+    var isMonthly = r.type === 'monthly';
     var activeClass = (origIndex === currentIndex) ? ' active' : '';
+    var badgeHtml = isMonthly
+      ? '<span class="badge-monthly">月报</span>'
+      : (isToday ? '<span class="badge-today">今天</span>' : '');
     return '<div class="date-item' + activeClass + '" onclick="onDateClick(' + origIndex + ')">' +
-      '<span class="dot"></span>' +
+      '<span class="dot' + (isMonthly ? ' dot-monthly' : '') + '"></span>' +
       '<div class="date-info">' +
-        '<span class="date-str">' + r.date + '</span>' +
-        '<span class="weekday">星期' + r.weekday + '</span>' +
+        '<span class="date-str">' + (isMonthly ? r.label + '月报' : r.date) + '</span>' +
+        '<span class="weekday">' + (isMonthly ? '运营月报' : '星期' + r.weekday) + '</span>' +
       '</div>' +
-      (isToday ? '<span class="badge-today">今天</span>' : '') +
+      badgeHtml +
     '</div>';
   }).join('');
 }
@@ -283,7 +298,10 @@ function selectDate(index) {
   currentIndex = index;
   var r = reports[index];
 
-  document.getElementById('current-title').textContent = r.date + ' 运营日报';
+  var isMonthly = r.type === 'monthly';
+  document.getElementById('current-title').textContent = isMonthly
+    ? r.label + ' 运营月报'
+    : r.date + ' 运营日报';
   renderDateList(document.getElementById('search-input').value.trim());
 
   var prevBtn = document.getElementById('btn-prev');

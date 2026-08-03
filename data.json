@@ -3,72 +3,98 @@
     {
       "date": "2026-08-02",
       "file": "小鹏运营日报_2026-08-02.html",
+      "type": "daily",
       "weekday": "日"
     },
     {
       "date": "2026-08-01",
       "file": "小鹏运营日报_2026-08-01.html",
+      "type": "daily",
       "weekday": "六"
     },
     {
       "date": "2026-07-31",
       "file": "小鹏运营日报_2026-07-31.html",
+      "type": "daily",
       "weekday": "五"
     },
     {
       "date": "2026-07-30",
       "file": "小鹏运营日报_2026-07-30.html",
+      "type": "daily",
       "weekday": "四"
     },
     {
       "date": "2026-07-29",
       "file": "小鹏运营日报_2026-07-29.html",
+      "type": "daily",
       "weekday": "三"
     },
     {
       "date": "2026-07-28",
       "file": "小鹏运营日报_2026-07-28.html",
+      "type": "daily",
       "weekday": "二"
     },
     {
       "date": "2026-07-27",
       "file": "小鹏运营日报_2026-07-27.html",
+      "type": "daily",
       "weekday": "一"
     },
     {
       "date": "2026-07-26",
       "file": "小鹏运营日报_2026-07-26.html",
+      "type": "daily",
       "weekday": "日"
     },
     {
       "date": "2026-07-25",
       "file": "小鹏运营日报_2026-07-25.html",
+      "type": "daily",
       "weekday": "六"
     },
     {
       "date": "2026-07-24",
       "file": "小鹏运营日报_2026-07-24.html",
+      "type": "daily",
       "weekday": "五"
     },
     {
       "date": "2026-07-23",
       "file": "小鹏运营日报_2026-07-23.html",
+      "type": "daily",
       "weekday": "四"
     },
     {
       "date": "2026-07-22",
       "file": "小鹏运营日报_2026-07-22.html",
+      "type": "daily",
       "weekday": "三"
     },
     {
       "date": "2026-07-21",
       "file": "小鹏运营日报_2026-07-21.html",
+      "type": "daily",
       "weekday": "二"
     },
     {
       "date": "2026-07-20",
       "file": "小鹏运营日报_2026-07-20.html",
+      "type": "daily",
       "weekday": "一"
+    },
+    {
+      "date": "2026-07",
+      "file": "小鹏7月运营月报.html",
+      "type": "monthly",
+      "label": "7月"
+    },
+    {
+      "date": "2026-06",
+      "file": "小鹏6月运营月报.html",
+      "type": "monthly",
+      "label": "6月"
     }
   ]
 }

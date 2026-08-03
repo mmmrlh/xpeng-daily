@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>小鹏S4超快充 6月运营月报</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f5f0;color:#2C2C2A;font-size:13px;line-height:1.6;padding:20px}
+.wrap{max-width:1180px;margin:0 auto}
+h1{font-size:20px;font-weight:500;margin-bottom:4px}
+.sub{color:#5F5E5A;font-size:12px;margin-bottom:16px}
+.card{background:#fff;border:0.5px solid #D3D1C7;border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.card h2{font-size:15px;font-weight:500;margin-bottom:12px;color:#26215C;display:flex;align-items:center;gap:8px}
+.card h2 .n{display:inline-block;width:22px;height:22px;background:#EEEDFE;color:#534AB7;border-radius:6px;text-align:center;line-height:22px;font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:4px}
+.kpi{background:#F1EFE8;border-radius:8px;padding:12px}
+.kpi .l{font-size:11px;color:#5F5E5A;margin-bottom:4px}
+.kpi .v{font-size:20px;font-weight:500;color:#2C2C2A}
+.kpi .v small{font-size:11px;color:#5F5E5A;font-weight:400}
+.kpi.hi .v{color:#0F6E56}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:7px 8px;text-align:right;border-bottom:0.5px solid #E8E6DF}
+th{background:#F1EFE8;font-weight:500;color:#444441;font-size:11px}
+td.st,th.st{text-align:left}
+td.hi{color:#0F6E56;font-weight:500}
+tr.tot td{background:#EEEDFE;font-weight:500}
+tr.tot td.st{color:#534AB7}
+.chart{position:relative;width:100%;height:300px;margin-top:8px}
+.chart.tall{height:340px}
+.chart.short{height:240px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:#5F5E5A;margin-bottom:6px;align-items:center}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px}
+.note{font-size:11px;color:#5F5E5A;margin-top:8px;padding:8px 10px;background:#F1EFE8;border-radius:6px}
+.note b{color:#444441}
+.vbar{background:#EAF3DE;border:0.5px solid #97C459;border-radius:6px;padding:8px 12px;font-size:12px;color:#27500A;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.vbar .dot{width:8px;height:8px;border-radius:50%;background:#3B6D11;flex-shrink:0}
+.bars{display:flex;flex-direction:column;gap:3px;min-width:220px}
+.pbar{background:#E8E6DF;border-radius:3px;height:15px;position:relative;width:100%}
+.pbar span{display:block;height:100%;background:#1D9E75;border-radius:3px}
+.pbar i{position:absolute;right:5px;top:0;font-style:normal;font-size:10px;color:#444;line-height:15px}
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:500}
+.tag.jm{background:#FEF3E2;color:#854F0B}
+.tag.gj{background:#E1F5EE;color:#0F6E56}
+</style></head><body><div class="wrap">
+<h1>小鹏S4超快充站 6月运营月报</h1>
+<div class="sub">数据周期：2026-06-01 至 2026-06-30 ｜ 6个站点 ｜ 生成时间：2026-07-15 ｜ 口径：最终结算服务费（商户实收），真实服务费=标准÷分润比例</div>
+
+<div class="vbar"><span class="dot"></span><b>数据质量校验全部通过</b>：免费+付费电量=344,160.70（=总电量344,160.71）｜ 尖峰平谷深谷=344,160.70（=总电量）｜ 免费+付费服务费=79,040.16（=结算服务费79,040.16）</div>
+
+<div class="card">
+<h2><span class="n">0</span>5月→6月 环比分析（6站）</h2>
+<table>
+<tr><th class="st">站点</th><th>5月电量(度)</th><th>6月电量(度)</th><th>电量环比</th><th>5月服务费(元)</th><th>6月服务费(元)</th><th>服务费环比</th><th>5月枪日均(度)</th><th>6月枪日均(度)</th><th>枪日均环比</th><th>5月免费电占比</th><th>6月免费电占比</th><th>变动</th></tr>
+<tr><td class='st'>广花国际</td><td>45,015.36</td><td>59,432.10</td><td><span style="color:#0F6E56">+32.0%</span></td><td>6,776.69</td><td>9,500.97</td><td><span style="color:#0F6E56">+40.2%</span></td><td>242.0</td><td>330.2</td><td><span style="color:#0F6E56">+36.4%</span></td><td>8.1%</td><td>7.5%</td><td>-0.6pp</td></tr>
+<tr><td class='st'>时代天境</td><td>65,491.02</td><td>53,952.98</td><td><span style="color:#E24B4A">-17.6%</span></td><td>19,902.81</td><td>16,782.04</td><td><span style="color:#E24B4A">-15.7%</span></td><td>352.1</td><td>299.7</td><td><span style="color:#E24B4A">-14.9%</span></td><td>23.9%</td><td>20.8%</td><td>-3.1pp</td></tr>
+<tr><td class='st'>时光启点</td><td>52,078.65</td><td>55,597.25</td><td><span style="color:#0F6E56">+6.8%</span></td><td>12,998.51</td><td>13,837.20</td><td><span style="color:#0F6E56">+6.5%</span></td><td>280.0</td><td>308.9</td><td><span style="color:#0F6E56">+10.3%</span></td><td>10.2%</td><td>7.4%</td><td>-2.8pp</td></tr>
+<tr><td class='st'>百事高 <span class="tag jm">新站爬坡</span><br><span style="font-size:10px;color:#5F5E5A">5月仅运营19天</span></td><td>14,869.17</td><td>41,053.51</td><td><span style="color:#0F6E56">+176.1%</span></td><td>3,142.36</td><td>7,273.04</td><td><span style="color:#0F6E56">+131.5%</span></td><td>79.9</td><td>228.1</td><td><span style="color:#0F6E56">+185.3%</span></td><td>35.2%</td><td>21.3%</td><td>-13.9pp</td></tr>
+<tr><td class='st'>南大干线化龙</td><td>82,470.71</td><td>80,404.18</td><td><span style="color:#E24B4A">-2.5%</span></td><td>19,151.30</td><td>19,682.84</td><td><span style="color:#0F6E56">+2.8%</span></td><td>665.1</td><td>670.0</td><td><span style="color:#0F6E56">+0.7%</span></td><td>17.1%</td><td>14.9%</td><td>-2.2pp</td></tr>
+<tr><td class='st'>恒兆广场</td><td>53,529.31</td><td>53,720.69</td><td><span style="color:#0F6E56">+0.4%</span></td><td>11,532.59</td><td>11,964.07</td><td><span style="color:#0F6E56">+3.7%</span></td><td>431.7</td><td>447.7</td><td><span style="color:#0F6E56">+3.7%</span></td><td>26.5%</td><td>27.3%</td><td>+0.8pp</td></tr>
+<tr class='tot'><td class='st'>共同5站合计</td><td>313,454.22</td><td>344,160.71</td><td><span style="color:#0F6E56">+9.8%</span></td><td>73,504.26</td><td>79,040.16</td><td><span style="color:#0F6E56">+7.5%</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+</table>
+<div class='note'>5→6月6站总电量 313,454.22度 → 344,160.71度（+9.8%），服务费 73,504.26元 → 79,040.16元（+7.5%）。广花国际+32%增长突出；<b>百事高为5/13上线新站</b>（5月仅运营19天），月总量+176%失真，真实日均增长约<b>75%</b>（783→1368度/天）；时代天境-17.6%需关注；南大干线化龙、恒兆基本持平。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">1</span>执行摘要</h2>
+<div class="kpis">
+<div class="kpi"><div class="l">6站总电量</div><div class="v">344,160.71<small> 度</small></div></div>
+<div class="kpi"><div class="l">结算服务费</div><div class="v">79,040.16<small> 元</small></div></div>
+<div class="kpi"><div class="l">结算电费</div><div class="v">213,545.86<small> 元</small></div></div>
+<div class="kpi hi"><div class="l">综合平均服务费</div><div class="v">0.2297<small> 元/度</small></div></div>
+<div class="kpi"><div class="l">总订单数</div><div class="v">9,806<small> 单</small></div></div>
+<div class="kpi"><div class="l">免费电占比</div><div class="v">16.0<small>%</small></div></div>
+</div>
+<div class="kpis" style="margin-top:10px">
+<div class="kpi"><div class="l">枪日均电量</div><div class="v">358.50<small> 度/枪/天</small></div></div>
+<div class="kpi"><div class="l">枪日均服务费</div><div class="v">82.33<small> 元/枪/天</small></div></div>
+<div class="kpi"><div class="l">客单度数</div><div class="v">35.10<small> 度/单</small></div></div>
+<div class="kpi"><div class="l">客单服务费</div><div class="v">8.06<small> 元/单</small></div></div>
+<div class="kpi"><div class="l">占位费收入</div><div class="v">1,646.75<small> 元</small></div></div>
+<div class="kpi"><div class="l">总枪数</div><div class="v">32<small> 把</small></div></div>
+</div>
+<div class="note">收入结构：电费 213,545.86元 + 服务费 79,040.16元 + 占位费 1,646.75元。其中服务费拆分：免费电 9,923.03元（12.6%）+ 付费电 69,117.13元（87.4%）。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">2</span>站点横向对比</h2>
+<table>
+<tr><th class="st">站点</th><th>模式</th><th>分润</th><th>枪数</th><th>总电量(度)</th><th>结算服务费(元)</th><th>标准综合<br>(元/度)</th><th>真实综合<br>(元/度)</th><th>免费电<br>占比</th><th>枪日均电量<br>(度/枪/天)</th><th>枪日均服务费<br>(元/枪/天)</th><th>客单度数</th><th>订单数</th></tr>
+<tr><td class='st'>广花国际</td><td><span class='tag gj'>共建</span></td><td>65%</td><td>6</td><td>59,432.10</td><td>9,500.97</td><td>0.1599</td><td class='hi'>0.2459</td><td>7.5%</td><td>330.18</td><td>52.78</td><td>31.90</td><td>1863</td></tr>
+<tr><td class='st'>时代天境</td><td><span class='tag jm'>加盟</span></td><td>90%</td><td>6</td><td>53,952.98</td><td>16,782.04</td><td>0.3110</td><td class='hi'>0.3456</td><td>20.8%</td><td>299.74</td><td>93.23</td><td>36.90</td><td>1462</td></tr>
+<tr><td class='st'>时光启点</td><td><span class='tag jm'>加盟</span></td><td>90%</td><td>6</td><td>55,597.25</td><td>13,837.20</td><td>0.2489</td><td class='hi'>0.2765</td><td>7.4%</td><td>308.87</td><td>76.87</td><td>29.48</td><td>1886</td></tr>
+<tr><td class='st'>百事高</td><td><span class='tag gj'>共建</span></td><td>65%</td><td>6</td><td>41,053.51</td><td>7,273.04</td><td>0.1772</td><td class='hi'>0.2726</td><td>21.3%</td><td>228.08</td><td>40.41</td><td>38.37</td><td>1070</td></tr>
+<tr><td class='st'>南大干线化龙</td><td><span class='tag gj'>共建</span></td><td>65%</td><td>4</td><td>80,404.18</td><td>19,682.84</td><td>0.2448</td><td class='hi'>0.3766</td><td>14.9%</td><td>670.03</td><td>164.02</td><td>39.43</td><td>2039</td></tr>
+<tr><td class='st'>恒兆广场</td><td><span class='tag gj'>共建</span></td><td>65%</td><td>4</td><td>53,720.69</td><td>11,964.07</td><td>0.2227</td><td class='hi'>0.3426</td><td>27.3%</td><td>447.67</td><td>99.70</td><td>36.15</td><td>1486</td></tr>
+<tr class='tot'><td class='st'>6站合计</td><td>—</td><td>—</td><td>32</td><td>344,160.71</td><td>79,040.16</td><td>0.2297</td><td class='hi'>—</td><td>16.0%</td><td>358.50</td><td>82.33</td><td>35.10</td><td>9806</td></tr>
+</table>
+<div class="note">真实综合服务费 = 标准综合服务费（实收）÷ 分润比例，还原为分润前向用户实收的单价，用于跨站点公平比较定价水平。<b>南大干线化龙</b>真实0.3766最高且枪日均电量670.03度/枪/天（4枪高吞吐）；<b>广花国际</b>真实0.2459最低。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">3</span>电量峰谷时段结构</h2>
+<div class="legend">
+<span><i style="background:#E24B4A"></i>尖</span><span><i style="background:#EF9F27"></i>峰</span><span><i style="background:#378ADD"></i>平</span><span><i style="background:#1D9E75"></i>谷</span><span><i style="background:#085041"></i>深谷</span>
+</div>
+<div class="chart tall"><canvas id="c1" role="img" aria-label="6站尖峰平谷深谷电量堆叠柱状图">峰谷电量堆叠图</canvas></div>
+<div class="note">6站合计：尖25,793.70度(7.5%)、峰36,523.42度(10.6%)、平144,247.93度(41.9%)、谷137,595.65度(40.0%)、深谷0.00度(0.0%)。谷电占比40.0%为最大时段，深谷6站全0（6月广东无深谷时段）。低谷(谷+深谷)合计40.0%，夜间充电需求显著。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">4</span>免费电 vs 付费电（电量占比 + 服务费单价）</h2>
+<table style="margin-bottom:10px">
+<tr><th>类型</th><th>总电量(度)</th><th>电量占比</th><th>标准服务费<br>(元/度)</th><th>真实服务费<br>(元/度)</th></tr>
+<tr><td class="st">免费电</td><td>55,174.56</td><td>16.0%</td><td>0.1798</td><td>—</td></tr>
+<tr><td class="st">付费电</td><td>288,986.14</td><td>84.0%</td><td>0.2392</td><td>—</td></tr>
+<tr class="tot"><td class="st">综合</td><td>344,160.71</td><td>100%</td><td>0.2297</td><td>—</td></tr>
+</table>
+<div class="legend">
+<span><i style="background:#888780"></i>标准(实收)</span><span><i style="background:#0F6E56"></i>真实(分润前)</span>
+<span style="margin-left:20px"><i style="background:#B4B2A9"></i>免费电</span><span><i style="background:#5DCAA5"></i>付费电</span><span><i style="background:#185FA5"></i>综合</span>
+</div>
+<div class="chart"><canvas id="c2" role="img" aria-label="免费付费综合平均服务费标准与真实对比">服务费对比图</canvas></div>
+<div class="note">真实服务费（分润前）普遍高于标准（实收），差额即平台分润部分。免费电平均服务费低于付费电（免费电按保底结算）。各站真实综合服务费差异反映定价策略，非分润比例造成。真实值因各站分润比例不同，合计不展示加权值。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">5</span>订单来源渠道结构</h2>
+<div class="legend">
+<span><i style="background:#0F6E56"></i>小鹏</span><span><i style="background:#185FA5"></i>滴滴充电</span><span><i style="background:#BA7517"></i>第三方渠道</span>
+</div>
+<div class="chart short"><canvas id="c3" role="img" aria-label="6站订单来源渠道占比堆叠条形图">订单来源占比图</canvas></div>
+<div class="note">6站合计：小鹏7,082.00单、滴滴931.00单、第三方1,793.00单。<b>南大干线化龙</b>第三方占比50.6%异常高（1031单），其余5站小鹏主导（40.61-86.64%）。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">6</span>枪日均效能对比</h2>
+<div class="legend">
+<span><i style="background:#0F6E56"></i>枪日均电量(度/枪/天)</span><span><i style="background:#993C1D"></i>枪日均服务费(元/枪/天)</span>
+</div>
+<div class="chart"><canvas id="c4" role="img" aria-label="6站枪日均电量与枪日均服务费对比">枪日均效能图</canvas></div>
+<div class="note">枪日均电量衡量单枪每天产出。南大干线化龙枪日均670.03度遥遥领先（4枪高负荷），百事高228.08度最低，差距2.9倍，反映选址流量差异。日均按30天计算。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">7</span>6月每日趋势</h2>
+<div class="legend">
+<span><i style="background:#0F6E56"></i>每日电量(度)</span><span><i style="background:#993C1D"></i>每日服务费(元)</span>
+<span style="margin-left:20px">工作日均值11,254.20度 / 周末均值10,729.80度</span>
+</div>
+<div class="chart tall"><canvas id="c5" role="img" aria-label="6月每日电量与服务费趋势">日趋势图</canvas></div>
+<div class="note">工作日日均电量11,254.20度 vs 周末日均10,729.80度，工作日高于周末。工作日日均服务费2,575.00元，周末2,487.90元。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">8</span>24小时充电时段分布</h2>
+<div class="legend">
+<span><i style="background:#185FA5"></i>每小时电量(度)</span>
+</div>
+<div class="chart"><canvas id="c6" role="img" aria-label="24小时充电电量分布柱状图">小时分布图</canvas></div>
+<div class="note" id="hourNote">充电高峰小时见图表峰值，低谷小时反映可引导充电的时段。结合分时电价可优化定价策略。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">9</span>枪使用均衡度（冷枪识别）</h2>
+<table>
+<tr><th class="st">站点</th><th>枪数</th><th>最高枪电量(度)</th><th>最低枪电量(度)</th><th>均衡度<br>(min/max)</th><th class="st" style="text-align:left">各枪电量分布</th></tr>
+<tr><td class='st'>广花国际</td><td>6</td><td>15,319.80</td><td>7,348.27</td><td>0.480</td><td class='bars'><div class='pbar'><span style='width:100%'></span><i>15320</i></div><div class='pbar'><span style='width:78%'></span><i>11953</i></div><div class='pbar'><span style='width:60%'></span><i>9182</i></div><div class='pbar'><span style='width:52%'></span><i>7896</i></div><div class='pbar'><span style='width:50%'></span><i>7732</i></div><div class='pbar'><span style='width:48%'></span><i>7348</i></div></td></tr>
+<tr><td class='st'>时代天境</td><td>6</td><td>15,500.35</td><td>5,409.62</td><td>0.349</td><td class='bars'><div class='pbar'><span style='width:100%'></span><i>15500</i></div><div class='pbar'><span style='width:83%'></span><i>12919</i></div><div class='pbar'><span style='width:44%'></span><i>6888</i></div><div class='pbar'><span style='width:43%'></span><i>6717</i></div><div class='pbar'><span style='width:42%'></span><i>6518</i></div><div class='pbar'><span style='width:35%'></span><i>5410</i></div></td></tr>
+<tr><td class='st'>时光启点</td><td>6</td><td>12,059.10</td><td>7,728.26</td><td>0.641</td><td class='bars'><div class='pbar'><span style='width:100%'></span><i>12059</i></div><div class='pbar'><span style='width:79%'></span><i>9482</i></div><div class='pbar'><span style='width:77%'></span><i>9247</i></div><div class='pbar'><span style='width:74%'></span><i>8868</i></div><div class='pbar'><span style='width:68%'></span><i>8214</i></div><div class='pbar'><span style='width:64%'></span><i>7728</i></div></td></tr>
+<tr><td class='st'>百事高</td><td>6</td><td>9,001.01</td><td>3,827.23</td><td>0.425</td><td class='bars'><div class='pbar'><span style='width:100%'></span><i>9001</i></div><div class='pbar'><span style='width:88%'></span><i>7907</i></div><div class='pbar'><span style='width:83%'></span><i>7488</i></div><div class='pbar'><span style='width:74%'></span><i>6691</i></div><div class='pbar'><span style='width:68%'></span><i>6139</i></div><div class='pbar'><span style='width:43%'></span><i>3827</i></div></td></tr>
+<tr><td class='st'>南大干线化龙</td><td>4</td><td>23,038.87</td><td>17,688.12</td><td>0.768</td><td class='bars'><div class='pbar'><span style='width:100%'></span><i>23039</i></div><div class='pbar'><span style='width:92%'></span><i>21121</i></div><div class='pbar'><span style='width:81%'></span><i>18557</i></div><div class='pbar'><span style='width:77%'></span><i>17688</i></div></td></tr>
+<tr><td class='st'>恒兆广场</td><td>4</td><td>15,816.99</td><td>11,951.91</td><td>0.756</td><td class='bars'><div class='pbar'><span style='width:100%'></span><i>15817</i></div><div class='pbar'><span style='width:85%'></span><i>13521</i></div><div class='pbar'><span style='width:79%'></span><i>12431</i></div><div class='pbar'><span style='width:76%'></span><i>11952</i></div></td></tr>
+
+</table>
+<div class="note">均衡度越接近1越均衡。均衡度低的站点存在"冷枪"（利用率偏低的枪），可检查设备状态或车位引导。每条右侧数字为该枪电量度数。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">10</span>峰谷购电成本与服务费毛利</h2>
+<table>
+<tr><th class="st">站点</th><th>尖电价(元/度)</th><th>峰电价(元/度)</th><th>平电价(元/度)</th><th>谷电价(元/度)</th><th>真实综合服务费<br>(元/度)</th></tr>
+<tr><td class='st'>广花国际</td><td>1.2088</td><td>1.1300</td><td>0.6800</td><td>0.2800</td><td class='hi'>0.2459</td></tr>
+<tr><td class='st'>时代天境</td><td>1.1627</td><td>1.1100</td><td>0.6700</td><td>0.2802</td><td class='hi'>0.3456</td></tr>
+<tr><td class='st'>时光启点</td><td>1.1888</td><td>1.1100</td><td>0.6700</td><td>0.2900</td><td class='hi'>0.2765</td></tr>
+<tr><td class='st'>百事高</td><td>1.2013</td><td>1.1300</td><td>0.6800</td><td>0.2800</td><td class='hi'>0.2726</td></tr>
+<tr><td class='st'>南大干线化龙</td><td>1.1988</td><td>1.1100</td><td>0.6700</td><td>0.2901</td><td class='hi'>0.3766</td></tr>
+<tr><td class='st'>恒兆广场</td><td>1.1733</td><td>1.1100</td><td>0.6700</td><td>0.2901</td><td class='hi'>0.3426</td></tr>
+
+</table>
+<div class="note">各时段购电电价 = 时段电费 ÷ 时段电量。真实综合服务费若高于峰电价，说明服务费能覆盖最高购电成本；若仅高于平/谷电价，则峰时充电毛利承压。此为定价优化参考。</div>
+</div>
+
+<div class="card">
+<h2><span class="n">11</span>数据质量核对</h2>
+<table>
+<tr><th class="st">校验项</th><th class="st">校验公式</th><th>结果</th><th>状态</th></tr>
+<tr><td>免费+付费电量=总电量</td><td>55,174.56+288,986.14=344,160.70 vs 344,160.71</td><td>一致</td><td><span class='tag gj'>通过</span></td></tr>
+<tr><td>尖+峰+平+谷+深谷=总电量</td><td>344,160.70 vs 344,160.71</td><td>一致</td><td><span class='tag gj'>通过</span></td></tr>
+<tr><td>免费+付费服务费=结算服务费</td><td>9,923.03+69,117.13=79,040.16 vs 79,040.16</td><td>一致</td><td><span class='tag gj'>通过</span></td></tr>
+</table>
+<div class="note">数据来源：小鹏 thor-saas 后台账单导出（6站xlsx，每站含汇总/账单明细/占位费三sheet）。样本量：9,806条订单。三项闭环校验全部通过，数据完整可信。</div>
+</div>
+
+<div class="sub" style="text-align:center;margin-top:8px">小鹏S4超快充6月运营月报 ｜ 数据分析：舒明析 ｜ 2026-07-15</div>
+</div>
+
+<script>
+const D = {"labels": ["广花国际", "时代天境", "时光启点", "百事高", "南大干线化龙", "恒兆广场"], "modes": ["共建", "加盟", "加盟", "共建", "共建", "共建"], "ratios": [0.65, 0.9, 0.9, 0.65, 0.65, 0.65], "guns": [6, 6, 6, 6, 4, 4], "total_kwh": [59432.1, 53952.98, 55597.25, 41053.51, 80404.18, 53720.69], "settle_fee": [9500.97, 16782.04, 13837.2, 7273.04, 19682.84, 11964.07], "real_all": [0.2459, 0.3456, 0.2765, 0.2726, 0.3766, 0.3426], "std_all": [0.1599, 0.311, 0.2489, 0.1772, 0.2448, 0.2227], "gun_kwh": [330.18, 299.74, 308.87, 228.08, 670.03, 447.67], "gun_fee": [52.78, 93.23, 76.87, 40.41, 164.02, 99.7], "free_pct": [7.48, 20.76, 7.4, 21.27, 14.94, 27.31], "paid_pct": [92.52, 79.24, 92.6, 78.73, 85.06, 72.69], "jian": [3640.75, 3801.85, 2210.46, 2783.58, 8912.23, 4444.83], "feng": [4680.78, 5670.83, 3667.85, 3685.27, 12354.96, 6463.73], "ping": [19383.83, 25333.88, 19340.62, 20093.14, 34614.72, 25481.74], "gu": [31726.74, 19146.42, 30378.31, 14491.52, 24522.26, 17330.4], "shengu": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "real_free": [0.25, 0.25, 0.25, 0.25, 0.25, 0.25], "real_paid": [0.2456, 0.3707, 0.2787, 0.2786, 0.3989, 0.3774], "std_free": [0.1625, 0.225, 0.225, 0.1625, 0.1625, 0.1625], "std_paid": [0.1596, 0.3336, 0.2508, 0.1811, 0.2593, 0.2453], "xp_pct": [75.95, 76.88, 86.64, 80.65, 40.61, 81.97], "didi_pct": [10.57, 11.56, 5.41, 14.86, 8.83, 8.34], "third_pct": [13.47, 11.56, 7.95, 4.49, 50.56, 9.69], "orders": [1863, 1462, 1886, 1070, 2039, 1486], "pile_balance": [0.48, 0.349, 0.641, 0.425, 0.768, 0.756], "pile_max": [15319.8, 15500.35, 12059.1, 9001.01, 23038.87, 15816.99], "pile_min": [7348.27, 5409.62, 7728.26, 3827.23, 17688.12, 11951.91], "jian_price": [1.2088, 1.1627, 1.1888, 1.2013, 1.1988, 1.1733], "feng_price": [1.13, 1.11, 1.11, 1.13, 1.11, 1.11], "ping_price": [0.68, 0.67, 0.67, 0.68, 0.67, 0.67], "gu_price": [0.28, 0.2802, 0.29, 0.28, 0.2901, 0.2901], "days": ["2026-05-31", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-06", "2026-06-07", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13", "2026-06-14", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-27", "2026-06-28", "2026-06-29", "2026-06-30"], "daily_kwh": [136.89, 10296.27, 12216.6, 12929.95, 12306.84, 12413.13, 13487.93, 13267.76, 10372.61, 9446.62, 9353.65, 11233.46, 13096.38, 11996.44, 10357.92, 10545.84, 9722.24, 11376.63, 12330.95, 12878.44, 10536.9, 12364.88, 12121.37, 11421.33, 10996.7, 11227.74, 10963.29, 12821.88, 11598.03, 10462.28, 9879.75], "daily_fee": [29.92, 2472.57, 2796.0, 2993.98, 2862.32, 2815.58, 3186.04, 3123.61, 2338.37, 2161.09, 2164.18, 2670.39, 2916.13, 2809.76, 2351.72, 2402.27, 2211.89, 2544.78, 2876.83, 3093.96, 2483.49, 2816.59, 2677.1, 2511.2, 2497.92, 2554.93, 2552.75, 2943.58, 2646.13, 2356.15, 2178.93], "daily_ord": [5, 297, 343, 341, 347, 351, 368, 379, 284, 265, 280, 315, 377, 332, 300, 304, 284, 324, 377, 335, 306, 352, 344, 325, 338, 334, 320, 372, 312, 314, 281], "hours": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"], "hourly_kwh": [37841.33, 13810.01, 10170.13, 9782.77, 8358.6, 11116.1, 22749.11, 22961.04, 9578.01, 11115.71, 5343.48, 6942.64, 22853.21, 15856.54, 10463.4, 8641.57, 9970.56, 9933.74, 11543.46, 22910.04, 20284.09, 17174.87, 13866.75, 10893.53], "hourly_ord": [900, 384, 284, 293, 231, 303, 601, 683, 263, 314, 152, 198, 746, 531, 309, 265, 297, 279, 354, 680, 578, 474, 380, 307], "wk_kwh": 11254.2, "we_kwh": 10729.8, "wk_fee": 2575.0, "we_fee": 2487.9};
+const C = (id,opt)=>new Chart(document.getElementById(id),opt);
+const F = (v,n=2)=>v.toLocaleString(undefined,{minimumFractionDigits:n,maximumFractionDigits:n});
+Chart.defaults.font.family = '-apple-system,"PingFang SC"';
+Chart.defaults.color = '#5F5E5A';
+Chart.defaults.animation = false;
+Chart.defaults.responsive = true;
+Chart.defaults.maintainAspectRatio = false;
+const base = {options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}}}}};
+
+C('c1',{type:'bar',data:{labels:D.labels,datasets:[
+{label:'尖',data:D.jian,backgroundColor:'#E24B4A'},
+{label:'峰',data:D.feng,backgroundColor:'#EF9F27'},
+{label:'平',data:D.ping,backgroundColor:'#378ADD'},
+{label:'谷',data:D.gu,backgroundColor:'#1D9E75'},
+{label:'深谷',data:D.shengu,backgroundColor:'#085041'}
+]},options:{...base.options,scales:{x:{...base.options.scales.x,stacked:true},y:{stacked:true,title:{display:true,text:'度'},grid:{color:'rgba(0,0,0,.05)'}}}}});
+
+C('c2',{type:'bar',data:{labels:D.labels,datasets:[
+{label:'免费-标准',data:D.std_free,backgroundColor:'#B4B2A9'},
+{label:'免费-真实',data:D.real_free,backgroundColor:'#0F6E56'},
+{label:'付费-标准',data:D.std_paid,backgroundColor:'#D3D1C7'},
+{label:'付费-真实',data:D.real_paid,backgroundColor:'#5DCAA5'},
+{label:'综合-标准',data:D.std_all,backgroundColor:'#888780'},
+{label:'综合-真实',data:D.real_all,backgroundColor:'#185FA5'}
+]},options:{...base.options,scales:{...base.options.scales,y:{title:{display:true,text:'元/度'},grid:{color:'rgba(0,0,0,.05)'}}}}});
+
+C('c3',{type:'bar',data:{labels:D.labels,datasets:[
+{label:'小鹏',data:D.xp_pct,backgroundColor:'#0F6E56'},
+{label:'滴滴充电',data:D.didi_pct,backgroundColor:'#185FA5'},
+{label:'第三方',data:D.third_pct,backgroundColor:'#BA7517'}
+]},options:{...base.options,indexAxis:'y',scales:{x:{stacked:true,max:100,title:{display:true,text:'%'}},y:{stacked:true}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.x.toFixed(1)+'%'}}}}});
+
+C('c4',{data:{labels:D.labels,datasets:[
+{type:'bar',label:'枪日均电量(度/枪/天)',data:D.gun_kwh,backgroundColor:'#0F6E56',borderRadius:4,yAxisID:'y'},
+{type:'line',label:'枪日均服务费(元/枪/天)',data:D.gun_fee,borderColor:'#993C1D',backgroundColor:'#993C1D',borderWidth:2,pointRadius:4,yAxisID:'y1'}
+]},options:{...base.options,scales:{...base.options.scales,y:{position:'left',title:{display:true,text:'度'},grid:{color:'rgba(0,0,0,.05)'}},y1:{position:'right',title:{display:true,text:'元'},grid:{display:false}}}}});
+
+C('c5',{type:'bar',data:{labels:D.days,datasets:[
+{type:'bar',label:'每日电量(度)',data:D.daily_kwh,backgroundColor:'#0F6E56',borderRadius:3,yAxisID:'y'},
+{type:'line',label:'每日服务费(元)',data:D.daily_fee,borderColor:'#993C1D',backgroundColor:'#993C1D',borderWidth:2,pointRadius:3,yAxisID:'y1'}
+]},options:{...base.options,scales:{x:{...base.options.scales.x,ticks:{maxTicksLimit:15,font:{size:10}}},y:{position:'left',title:{display:true,text:'度'},grid:{color:'rgba(0,0,0,.05)'}},y1:{position:'right',title:{display:true,text:'元'},grid:{display:false}}}}});
+
+C('c6',{type:'bar',data:{labels:D.hours,datasets:[{label:'电量(度)',data:D.hourly_kwh,backgroundColor:'#185FA5',borderRadius:3}]},options:{...base.options,scales:{...base.options.scales,y:{title:{display:true,text:'度'},grid:{color:'rgba(0,0,0,.05)'}},x:{title:{display:true,text:'小时'}}}}});
+
+(()=>{
+  const h=D.hourly_kwh; const max=Math.max(...h); const maxIdx=h.indexOf(max);
+  const night=h.slice(0,6).reduce((a,b)=>a+b,0); const tot=h.reduce((a,b)=>a+b,0); const nightPct=night/tot*100;
+  document.getElementById('hourNote').innerHTML='充电高峰出现在 <b>'+D.hours[maxIdx]+':00</b>（'+F(max)+'度）。0-6点夜间电量占 <b>'+nightPct.toFixed(1)+'%</b>，与谷电时段'+(nightPct>30?'高度吻合':'部分吻合')+'，分时定价可在夜间低谷进一步引流。';
+})();
+</script>
+</body></html>
