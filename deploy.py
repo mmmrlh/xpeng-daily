@@ -13,6 +13,7 @@ import json
 import os
 import shutil
 import datetime
+import calendar
 import re
 
 # ====== 路径配置 ======
@@ -98,8 +99,8 @@ def main():
 
     # === 第二步：扫描 reports/ 目录，生成 data.json ===
     reports = []
-    for fname in sorted(os.listdir(REPORTS_DIR), reverse=True):
-        # 日报
+    for fname in os.listdir(REPORTS_DIR):
+        # 日报：sort_date = 日期本身 (YYYY-MM-DD)
         m = re.match(r"小鹏运营日报_(\d{4}-\d{2}-\d{2})\.html", fname)
         if m:
             date_str = m.group(1)
@@ -110,36 +111,30 @@ def main():
                 "file": fname,
                 "type": "daily",
                 "weekday": WEEKDAY_MAP[w],
+                "sort_date": date_str,
             })
             continue
 
-        # 月报
+        # 月报：sort_date = 当月最后一天的前一天 + ".5"，确保排在最后一天日报之后
+        # 例如 7月 final_day=31 → sort_date="2026-07-30.5"，位于 "2026-07-31" 和 "2026-07-30" 之间
         m = re.match(r"小鹏(\d+)月运营月报\.html", fname)
         if m:
             month_num = int(m.group(1))
             date_str = f"2026-{month_num:02d}"
-            # 月报的 sort_date 用当月最后一天，保证排序正确
-            if month_num == 12:
-                sort_date = "2026-12-31"
-            else:
-                # 下月第一天减一天
-                import calendar
-                last_day = calendar.monthrange(2026, month_num)[1]
-                sort_date = f"2026-{month_num:02d}-{last_day:02d}"
+            last_day = calendar.monthrange(2026, month_num)[1]
+            sort_date = f"2026-{month_num:02d}-{last_day - 1:02d}.5"
             reports.append({
                 "date": date_str,
                 "file": fname,
                 "type": "monthly",
                 "label": f"{month_num}月",
+                "sort_date": sort_date,
             })
             continue
 
-    # 年报也可以加，预留
-    # 小鹏2026年度运营年报.html 等
+    # 按 sort_date 降序排列，月报自然穿插在当月最后一天日报之后
+    reports.sort(key=lambda r: r["sort_date"], reverse=True)
 
-    # 按 sort_date 排序（日报用 date，月报用月末日期）
-    # 这里日报 date 已经是 YYYY-MM-DD，月报 date 是 YYYY-MM，用 date 直接排序月报会排在日报前面
-    # 用 label/sort_key 解决：月报放在当月最后
     data = {"reports": reports}
     data_path = os.path.join(PROJECT_DIR, "data.json")
     with open(data_path, "w", encoding="utf-8") as f:
@@ -151,9 +146,9 @@ def main():
     print(f"   日报 {daily_count} 份 + 月报 {monthly_count} 份 = 共 {len(reports)} 份")
     for r in reports:
         if r.get("type") == "monthly":
-            print(f"   · {r['date']} 📊 {r['label']}月报")
+            print(f"   · {r['date']} 📊 {r['label']}月报  [sort: {r['sort_date']}]")
         else:
-            print(f"   · {r['date']} (星期{r['weekday']})")
+            print(f"   · {r['date']} (星期{r['weekday']})  [sort: {r['sort_date']}]")
 
     print(f"\n{'=' * 50}")
     print(f"  ✅ 同步完成！")
