@@ -115,14 +115,14 @@ def main():
             })
             continue
 
-        # 月报：sort_date = 当月最后一天的前一天 + ".5"，确保排在最后一天日报之后
-        # 例如 7月 final_day=31 → sort_date="2026-07-30.5"，位于 "2026-07-31" 和 "2026-07-30" 之间
+        # 月报：sort_date = 当月最后一天 + ".5"，排在最后一天日报和次月第一天之间
+        # 例如 7月 last_day=31 → sort_date="2026-07-31.5"，位于 8/1 和 7/31 之间
         m = re.match(r"小鹏(\d+)月运营月报\.html", fname)
         if m:
             month_num = int(m.group(1))
             date_str = f"2026-{month_num:02d}"
             last_day = calendar.monthrange(2026, month_num)[1]
-            sort_date = f"2026-{month_num:02d}-{last_day - 1:02d}.5"
+            sort_date = f"2026-{month_num:02d}-{last_day:02d}.5"
             reports.append({
                 "date": date_str,
                 "file": fname,
