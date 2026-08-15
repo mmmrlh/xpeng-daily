@@ -1,6 +1,13 @@
 {
   "reports": [
     {
+      "date": "2026-08-14",
+      "file": "小鹏运营日报_2026-08-14.html",
+      "type": "daily",
+      "weekday": "五",
+      "sort_date": "2026-08-14"
+    },
+    {
       "date": "2026-08-13",
       "file": "小鹏运营日报_2026-08-13.html",
       "type": "daily",
