@@ -16,10 +16,19 @@ import datetime
 import calendar
 import re
 
-# ====== 路径配置 ======
-SRC_DIR = "/Users/apple/WorkBuddy/小鹏运营日报/outputs"
-MONTHLY_SRC_DIR = "/Users/apple/WorkBuddy/小鹏月报分析/output"
-PROJECT_DIR = "/Users/apple/WorkBuddy/小鹏日报看板"
+# ====== 路径配置（自动推导，无需手动修改） ======
+# 迁移包目录结构：
+#   迁移包根目录/
+#     ├── 小鹏运营日报/     （采集+生成）
+#     ├── 小鹏日报看板/     （本脚本所在目录）
+#     └── 小鹏月报分析/output/
+# 如需要自定义，可通过环境变量覆盖：
+#   XPENG_DAILY_SRC / XPENG_MONTHLY_SRC / XPENG_DASHBOARD_DIR
+_MY_DIR = os.path.dirname(os.path.abspath(__file__))            # 小鹏日报看板/
+_BASE_DIR = os.path.dirname(_MY_DIR)                            # 迁移包根目录/
+SRC_DIR = os.environ.get("XPENG_DAILY_SRC", os.path.join(_BASE_DIR, "小鹏运营日报", "outputs"))
+MONTHLY_SRC_DIR = os.environ.get("XPENG_MONTHLY_SRC", os.path.join(_BASE_DIR, "小鹏月报分析", "output"))
+PROJECT_DIR = os.environ.get("XPENG_DASHBOARD_DIR", _MY_DIR)
 REPORTS_DIR = os.path.join(PROJECT_DIR, "reports")
 START_DATE = "2026-07-20"  # 日报：只同步此日期及之后的
 
@@ -52,22 +61,25 @@ def main():
     update_count = 0
 
     # 日报：小鹏运营日报_YYYY-MM-DD.html
-    for fname in os.listdir(SRC_DIR):
-        m = re.match(r"小鹏运营日报_(\d{4}-\d{2}-\d{2})\.html", fname)
-        if not m:
-            continue
-        date_str = m.group(1)
-        if date_str < START_DATE:
-            continue
-        src = os.path.join(SRC_DIR, fname)
-        dst = os.path.join(REPORTS_DIR, fname)
-        result = sync_file(src, dst, fname)
-        if result == "new":
-            new_count += 1
-            print(f"   🆕 新增日报: {fname}")
-        elif result == "update":
-            update_count += 1
-            print(f"   🔄 更新日报: {fname}")
+    if not os.path.isdir(SRC_DIR):
+        print(f"   ⚠️ 日报源目录不存在: {SRC_DIR}")
+    else:
+        for fname in os.listdir(SRC_DIR):
+            m = re.match(r"小鹏运营日报_(\d{4}-\d{2}-\d{2})\.html", fname)
+            if not m:
+                continue
+            date_str = m.group(1)
+            if date_str < START_DATE:
+                continue
+            src = os.path.join(SRC_DIR, fname)
+            dst = os.path.join(REPORTS_DIR, fname)
+            result = sync_file(src, dst, fname)
+            if result == "new":
+                new_count += 1
+                print(f"   🆕 新增日报: {fname}")
+            elif result == "update":
+                update_count += 1
+                print(f"   🔄 更新日报: {fname}")
 
     # 月报：小鹏X月运营月报.html（如 小鹏6月运营月报.html）
     if os.path.isdir(MONTHLY_SRC_DIR):
