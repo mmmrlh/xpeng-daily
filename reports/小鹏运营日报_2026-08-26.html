@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小鹏运营日报｜2026-08-26</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#fff;--surface:#f7f7f7;--ink:#0d0d0d;--muted:#5d5d5d;--tertiary:#8f8f8f;--border:rgba(13,13,13,.08);--accent:#0285ff;--positive:#00692a;--positive-bg:#edfaf2;--negative:#ba2623;--negative-bg:#fff0f0;--radius:16px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg)}
+@media(prefers-color-scheme:dark){:root{--bg:#181818;--surface:#212121;--ink:#dfdfdf;--muted:#cdcdcd;--tertiary:#afafaf;--border:rgba(255,255,255,.12);--positive:#79d996;--positive-bg:rgba(64,180,99,.16);--negative:#ff8583;--negative-bg:rgba(224,74,70,.16)}}
+*{box-sizing:border-box}body{margin:0;padding:0;font-size:14px;line-height:1.5}
+.container{max-width:1100px;margin:0 auto;padding:28px 28px 56px}
+h1{margin:4px 0 8px;font-size:26px;font-weight:600;letter-spacing:-0.02em}
+h2{font-size:20px;font-weight:600;margin:0 0 12px}
+.desc{color:var(--muted);max-width:720px;margin:0 0 24px}
+.meta{color:var(--tertiary);font-size:12px;margin-bottom:20px}
+.header{border-bottom:1px solid var(--border);padding-bottom:24px}
+.badge{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;font-size:12px}
+.badge-pass{color:var(--positive);border-color:var(--positive);background:var(--positive-bg)}
+
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}
+.metric-card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:20px}
+.metric-card .label{font-size:13px;color:var(--muted);margin:0 0 4px}
+.metric-card .value{font-size:28px;font-weight:600;margin:0}
+.metric-card .sub{font-size:14px;color:var(--tertiary);margin:4px 0 0}
+
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+.chart-card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:20px}
+.chart-card h3{margin:0 0 12px;font-size:16px;font-weight:600}
+.chart-card canvas{max-height:300px}
+.chart-nav{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)}
+.chart-nav input[type=range]{flex:1;accent-color:#0285ff;height:6px;cursor:pointer}
+.chart-nav .nav-btn{font-size:11px;padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);cursor:pointer;color:var(--ink);font-family:inherit;white-space:nowrap}
+.chart-nav .nav-btn:hover{background:var(--surface)}
+.chart-nav .range-label{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:88px;text-align:right}
+
+.section{margin:32px 0}
+table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+th,td{padding:8px 6px;text-align:left;border-bottom:1px solid var(--border)}
+th{font-size:11px;font-weight:600;color:var(--muted);text-transform:none;background:var(--surface)}
+td{color:var(--ink)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+
+.core-table th:nth-child(1){width:18%}.core-table th:nth-child(2){width:10%}
+.core-table th:nth-child(3){width:11%}.core-table th:nth-child(4){width:10%}
+.core-table th:nth-child(5){width:11%}.core-table th:nth-child(6){width:11%}
+.core-table th:nth-child(7){width:14%}.core-table th:nth-child(8){width:15%}
+.struct-table th:nth-child(1){width:18%}
+.struct-table th:nth-child(2){width:14%}
+.struct-table th:nth-child(n+3){width:17%}
+/* daily-table: 横向滚动 + 首末列固定（fixed 布局强制撑开） */
+.daily-wrap{overflow-x:scroll;overflow-y:visible;scrollbar-gutter:stable}
+.daily-wrap::-webkit-scrollbar{height:14px;-webkit-appearance:none;background:var(--surface)}
+.daily-wrap::-webkit-scrollbar-track{background:var(--surface);border-radius:7px}
+.daily-wrap::-webkit-scrollbar-thumb{background:var(--tertiary);border-radius:7px;border:2px solid var(--surface);min-width:40px}
+.daily-wrap::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+.daily-wrap{scrollbar-width:thin;scrollbar-color:var(--tertiary) var(--surface)}
+.daily-table{table-layout:fixed;width:1390px;min-width:1390px;border-collapse:collapse}
+.daily-table th,.daily-table td{white-space:nowrap;padding:8px 6px}
+.daily-table th:nth-child(1),.daily-table td:nth-child(1){
+  position:sticky;left:0;z-index:2;background:var(--bg);
+  width:170px;min-width:170px;max-width:170px;
+  white-space:normal;font-weight:500
+}
+.daily-table th:last-child,.daily-table td:last-child{
+  position:sticky;right:0;z-index:2;background:var(--bg);
+  width:80px;min-width:80px;max-width:80px;font-weight:600;
+  box-shadow:-3px 0 8px rgba(0,0,0,.12)
+}
+/* 日期列固定 66px：可视区 1044px - 站点列 170 - 均值列 80 = 794px，794÷66 ≈ 12 列，完整显示最近 12 天 */
+.daily-table th:nth-child(n+2):not(:last-child),.daily-table td:nth-child(n+2):not(:last-child){
+  width:66px;min-width:66px;max-width:66px
+}
+.daily-table th:first-child{background:var(--surface);z-index:4;box-shadow:2px 0 6px rgba(0,0,0,.08)}
+.daily-table th:last-child{background:var(--surface);z-index:4}
+
+.core-table th:first-child,.core-table td:first-child,
+.struct-table th:first-child,.struct-table td:first-child{
+  position:sticky;left:0;z-index:2;background:var(--bg)
+}
+.core-table th:first-child,.struct-table th:first-child{
+  background:var(--surface);z-index:3
+}
+tr.summary td:first-child{background:var(--surface)}
+@media(prefers-color-scheme:dark){
+  .core-table td:first-child,.struct-table td:first-child{background:var(--bg)}
+  .core-table th:first-child,.struct-table th:first-child,
+  tr.summary td:first-child{background:var(--surface)}
+  .daily-table th:first-child,.daily-table td:first-child,
+  .daily-table th:last-child,.daily-table td:last-child{background:var(--bg)}
+  .daily-table th:first-child,.daily-table th:last-child,
+  tr.summary td:first-child{background:var(--surface)}
+  .daily-table th:first-child,.daily-table th:last-child,
+  .daily-table td:last-child{box-shadow:-2px 0 6px rgba(0,0,0,.5)}
+  .daily-table th:first-child{box-shadow:2px 0 6px rgba(0,0,0,.5)}
+}
+tr.summary td:not(:first-child){font-weight:600;background:var(--surface)}
+
+@media(max-width:900px){
+  .container{max-width:100%;padding:20px 16px 40px}
+  .metrics{grid-template-columns:1fr}.charts{grid-template-columns:1fr}
+  th,td{font-size:11px;padding:6px 3px}
+}
+@media print{
+  .container{max-width:100%;padding:16px 12px}.metrics{break-inside:avoid}.chart-card{break-inside:avoid}
+}
+</style></head>
+<body>
+<div class="container">
+<div class="header">
+  <div class="meta">
+    <span>小鹏充电商户系统 · 充电账单（新） · 昨日</span>
+    <span class="badge badge-pass">✅ 校验通过</span>
+  </div>
+  <h1>小鹏运营日报｜2026-08-26</h1>
+  <p class="desc">来源：已登录的小鹏充电商户系统"充电账单（新）"页面。自动采集提取电费结算（汇总）、服务费清算（汇总）、占位费清算（汇总）；缺失值不按 0 处理。</p>
+</div>
+
+<div class="section">
+  <h2>Executive Summary</h2>
+  <ul>
+    <li><strong>昨日订单总电量为 13108.36 度，已确认 42 枪。</strong> 小鹏渠道 8882.16 度（67.8%），三方渠道 4226.19 度。</li>
+    <li><strong>最终结算服务费合计 2973.98 元。</strong> 数据来源：充电账单（新）；综合均价 = 最终结算服务费 ÷ 总电量。</li>
+    <li><strong>日报以商户"全部站点"为正式汇总。</strong> 单站数据用于交叉校验和运营明细；公式不通过均明确标为待复核。</li>
+  </ul>
+</div>
+
+<div class="metrics">
+  <div class="metric-card">
+    <p class="label">两商户昨日订单电量（度）</p>
+    <p class="value">13,108.4</p>
+  </div>
+  <div class="metric-card">
+    <p class="label">小鹏渠道占比</p>
+    <p class="value">67.8%</p>
+    <p class="sub">小鹏渠道电量 8,882.16 度</p>
+  </div>
+  <div class="metric-card">
+    <p class="label">整体枪均电量（度/枪）</p>
+    <p class="value">312.1</p>
+    <p class="sub">已确认充电枪数 42</p>
+  </div>
+</div>
+
+<div class="charts">
+  <div class="chart-card">
+    <h3>全部站点充电趋势（度）</h3>
+    <canvas id="totalChart"></canvas>
+    <div class="chart-nav">
+      <button class="nav-btn" data-reset="totalChart">最近 7 天</button>
+      <input type="range" id="totalChart-nav" min="0" max="100" value="100">
+      <span class="range-label" id="totalChart-range">--</span>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>渠道分布趋势（度）</h3>
+    <canvas id="channelChart"></canvas>
+    <div class="chart-nav">
+      <button class="nav-btn" data-reset="channelChart">最近 7 天</button>
+      <input type="range" id="channelChart-nav" min="0" max="100" value="100">
+      <span class="range-label" id="channelChart-range">--</span>
+    </div>
+  </div>
+</div>
+
+<div class="charts">
+  <div class="chart-card">
+    <h3>枪均电量趋势（度/枪）</h3>
+    <canvas id="perGunChart"></canvas>
+    <div class="chart-nav">
+      <button class="nav-btn" data-reset="perGunChart">最近 7 天</button>
+      <input type="range" id="perGunChart-nav" min="0" max="100" value="100">
+      <span class="range-label" id="perGunChart-range">--</span>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>结算服务费均价趋势（元/度）</h3>
+    <canvas id="avgFeeChart"></canvas>
+    <div class="chart-nav">
+      <button class="nav-btn" data-reset="avgFeeChart">最近 7 天</button>
+      <input type="range" id="avgFeeChart-nav" min="0" max="100" value="100">
+      <span class="range-label" id="avgFeeChart-range">--</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>08-26 站点核心运营指标</h2>
+  <p style="color:var(--muted);margin:0 0 12px">综合均价 = 最终结算服务费 ÷ 总电量；真实均价 = 综合均价 ÷ 费率系数（参考值）；参考日均基于已读取历史数据均值。</p>
+  <div style="overflow-x:auto">
+  <table class="core-table">
+    <thead><tr>
+      <th>站点（枪）</th><th class="num">参考日均</th><th class="num">总电量（度）</th><th class="num">枪均（度/枪）</th>
+      <th class="num">综合均价</th><th class="num">真实均价</th><th class="num">结算服务费</th><th class="num">枪均收入</th>
+    </tr></thead>
+    <tbody>
+      <tr class="summary"><td>全部站点（汇总）（42枪）</td><td class="num" style="font-size:11px;color:var(--tertiary)">—</td><td class="num">13,108.357</td><td class="num">312.10</td><td class="num">0.2269</td><td class="num">—</td><td class="num">2973.98</td><td class="num">70.81</td></tr>
+      <tr><td>南大干线（4枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">2156度</td><td class="num">2,448.207</td><td class="num">612.05</td><td class="num">0.2659</td><td class="num">0.4091</td><td class="num">651.00</td><td class="num">162.75</td></tr>
+      <tr><td>恒兆广场（4枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1644度</td><td class="num">1,531.085</td><td class="num">382.77</td><td class="num">0.2411</td><td class="num">0.3709</td><td class="num">369.12</td><td class="num">92.28</td></tr>
+      <tr><td>时代天境（6枪·加盟90%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1560度</td><td class="num">1,541.612</td><td class="num">256.94</td><td class="num">0.2849</td><td class="num">0.3165</td><td class="num">439.18</td><td class="num">73.20</td></tr>
+      <tr><td>广花国际（6枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1334度</td><td class="num">2,253.064</td><td class="num">375.51</td><td class="num">0.1660</td><td class="num">0.2553</td><td class="num">373.90</td><td class="num">62.32</td></tr>
+      <tr><td>青创园（10枪·加盟90%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">2192度</td><td class="num">2,276.081</td><td class="num">227.61</td><td class="num">0.2355</td><td class="num">0.2617</td><td class="num">536.06</td><td class="num">53.61</td></tr>
+      <tr><td>百事高（6枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1687度</td><td class="num">1,755.701</td><td class="num">292.62</td><td class="num">0.1590</td><td class="num">0.2446</td><td class="num">279.16</td><td class="num">46.53</td></tr>
+      <tr><td>超充时光启点（6枪·加盟90%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1338度</td><td class="num">1,302.607</td><td class="num">217.10</td><td class="num">0.2499</td><td class="num">0.2777</td><td class="num">325.56</td><td class="num">54.26</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>2026-08-26 订单电量结构</h2>
+  <p style="color:var(--muted);margin:0 0 12px">总电量 = 小鹏渠道 + 三方渠道 = 免费电量 + 付费电量。下表后两列展示免费与付费电量，及其占总量比例（免费% + 付费% = 100%）。</p>
+  <div style="overflow-x:auto">
+  <table class="struct-table">
+    <thead><tr>
+      <th>站点</th>
+      <th class="num">总电量</th>
+      <th class="num">小鹏渠道电量</th><th class="num">三方渠道电量</th>
+      <th class="num">免费电量</th><th class="num">付费电量</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+  <td>全部站点（汇总）（42枪）</td>
+  <td class="num"><b>13108.36度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">8882.16度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 67.8%</div></td>
+  <td class="num">4226.19度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 32.2%</div></td>
+  <td class="num">1331.25度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 10.2%</div></td>
+  <td class="num">11777.11度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 89.8%</div></td>
+</tr>
+      <tr>
+  <td>南大干线（4枪）</td>
+  <td class="num"><b>2448.21度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1035.89度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 42.3%</div></td>
+  <td class="num">1412.31度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 57.7%</div></td>
+  <td class="num">240.22度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 9.8%</div></td>
+  <td class="num">2207.99度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 90.2%</div></td>
+</tr>
+      <tr>
+  <td>恒兆广场（4枪）</td>
+  <td class="num"><b>1531.09度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1311.14度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 85.6%</div></td>
+  <td class="num">219.94度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 14.4%</div></td>
+  <td class="num">302.34度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 19.7%</div></td>
+  <td class="num">1228.75度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 80.3%</div></td>
+</tr>
+      <tr>
+  <td>时代天境（6枪）</td>
+  <td class="num"><b>1541.61度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1133.92度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 73.6%</div></td>
+  <td class="num">407.70度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 26.4%</div></td>
+  <td class="num">87.42度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 5.7%</div></td>
+  <td class="num">1454.20度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 94.3%</div></td>
+</tr>
+      <tr>
+  <td>广花国际（6枪）</td>
+  <td class="num"><b>2253.06度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1770.50度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 78.6%</div></td>
+  <td class="num">482.56度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 21.4%</div></td>
+  <td class="num">211.26度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 9.4%</div></td>
+  <td class="num">2041.80度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 90.6%</div></td>
+</tr>
+      <tr>
+  <td>青创园（10枪）</td>
+  <td class="num"><b>2276.08度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1504.41度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 66.1%</div></td>
+  <td class="num">771.67度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 33.9%</div></td>
+  <td class="num">159.94度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 7.0%</div></td>
+  <td class="num">2116.14度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 93.0%</div></td>
+</tr>
+      <tr>
+  <td>百事高（6枪）</td>
+  <td class="num"><b>1755.70度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">928.63度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 52.9%</div></td>
+  <td class="num">827.07度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 47.1%</div></td>
+  <td class="num">301.52度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 17.2%</div></td>
+  <td class="num">1454.18度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 82.8%</div></td>
+</tr>
+      <tr>
+  <td>超充时光启点（6枪）</td>
+  <td class="num"><b>1302.61度</b><div style="color:var(--tertiary);font-size:11px;margin-top:2px">占比 100%</div></td>
+  <td class="num">1197.67度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 91.9%</div></td>
+  <td class="num">104.93度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 8.1%</div></td>
+  <td class="num">28.55度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 2.2%</div></td>
+  <td class="num">1274.06度<div style="color:var(--tertiary);font-size:11px;margin-top:2px">占总量 97.8%</div></td>
+</tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>已读取日站点总电量</h2>
+  <p style="color:var(--muted);margin:0 0 12px">站点为行、日期为列，末列为已读取日期均值。空白不代表 0 度。参考日均列即来源此表均值。</p>
+  <div class="chart-nav" style="margin:0 0 8px;padding-top:0;border-top:none">
+    <button class="nav-btn" data-reset="dailyTable">最近 12 天</button>
+    <input type="range" id="dailyTable-nav" min="0" max="100" value="100" aria-label="日电量表格横向滚动">
+    <span class="range-label" id="dailyTable-range">--</span>
+  </div>
+  <div class="daily-wrap">
+  <table class="daily-table">
+    <thead><tr>
+      <th>站点</th><th class="num">08-25</th><th class="num">08-26</th><th class="num">均值</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>清源｜南大干线（4枪）</td><td class="num">1864.54</td><td class="num">2448.21</td><td class="num" style="font-weight:600">2156.38</td></tr>
+      <tr><td>清源｜恒兆广场（4枪）</td><td class="num">1757.63</td><td class="num">1531.09</td><td class="num" style="font-weight:600">1644.36</td></tr>
+      <tr><td>清源｜时代天境（6枪）</td><td class="num">1579.10</td><td class="num">1541.61</td><td class="num" style="font-weight:600">1560.36</td></tr>
+      <tr><td>清源｜广花国际（6枪）</td><td class="num">415.43</td><td class="num">2253.06</td><td class="num" style="font-weight:600">1334.25</td></tr>
+      <tr><td>清源｜青创园（10枪）</td><td class="num">2107.93</td><td class="num">2276.08</td><td class="num" style="font-weight:600">2192.00</td></tr>
+      <tr><td>清源｜百事高（6枪）</td><td class="num">1618.40</td><td class="num">1755.70</td><td class="num" style="font-weight:600">1687.05</td></tr>
+      <tr><td>超充时光｜时光启点（6枪）</td><td class="num">1372.64</td><td class="num">1302.61</td><td class="num" style="font-weight:600">1337.62</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div style="margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--tertiary);font-size:12px">
+  公式校验: 9/9 |
+  商户汇总: 2/2 |
+  生成时间: 2026-08-26T22:03:33.837Z
+</div>
+</div>
+
+<script>
+const LABELS=["08-25","08-26"];
+const N=LABELS.length;
+const WIN=7;
+const startDefault=Math.max(0,N-WIN);
+const xRange={min:startDefault,max:N-1};
+
+new Chart(document.getElementById('totalChart'),{
+  type:'line',data:{
+    labels:LABELS,
+    datasets:[{label:'订单电量（度）',data:[10715.677,13108.357],borderColor:'#0285ff',backgroundColor:'rgba(2,133,255,.1)',fill:true,tension:.3}]
+  },options:{responsive:true,plugins:{legend:{display:false}},scales:{x:xRange,y:{beginAtZero:false}}}
+});
+
+new Chart(document.getElementById('channelChart'),{
+  type:'line',data:{
+    labels:LABELS,
+    datasets:[
+      {label:'小鹏渠道',data:[7659.36,8882.162],borderColor:'#0285ff',tension:.3,fill:false},
+      {label:'三方渠道',data:[3056.3169999999996,4226.195],borderColor:'#f59e0b',tension:.3,fill:false}
+    ]
+  },options:{responsive:true,plugins:{legend:{display:true}},scales:{x:xRange,y:{stacked:false}}}
+});
+
+new Chart(document.getElementById('perGunChart'),{
+  type:'line',data:{
+    labels:LABELS,
+    datasets:[{label:'枪均电量（度/枪）',data:[255.13516666666666,312.1037380952381],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',fill:true,tension:.3}]
+  },options:{responsive:true,plugins:{legend:{display:false}},scales:{x:xRange,y:{beginAtZero:false}}}
+});
+
+new Chart(document.getElementById('avgFeeChart'),{
+  type:'line',data:{
+    labels:LABELS,
+    datasets:[{label:'结算均价（元/度）',data:[0.24056249549141878,0.22687664060415808],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.1)',fill:true,tension:.3,spanGaps:true}]
+  },options:{responsive:true,plugins:{legend:{display:false}},scales:{x:xRange,y:{beginAtZero:false}}}
+});
+
+(function setupChartNavs(){
+  const ids=['totalChart','channelChart','perGunChart','avgFeeChart'];
+  ids.forEach(id=>{
+    const chart=Chart.getChart(id);
+    if(!chart)return;
+    const slider=document.getElementById(id+'-nav');
+    const range=document.getElementById(id+'-range');
+    const btn=document.querySelector('[data-reset="'+id+'"]');
+    function applyWindow(startIdx){
+      const endIdx=Math.min(N-1,startIdx+WIN-1);
+      chart.options.scales.x.min=startIdx;
+      chart.options.scales.x.max=endIdx;
+      chart.update('none');
+      if(slider)slider.value=startIdx;
+      if(range)range.textContent=LABELS[startIdx]+' ~ '+LABELS[endIdx];
+    }
+    if(slider){
+      slider.min=0;
+      slider.max=Math.max(0,N-WIN);
+      slider.value=startDefault;
+      slider.addEventListener('input',e=>applyWindow(+e.target.value));
+    }
+    if(btn)btn.addEventListener('click',()=>applyWindow(startDefault));
+    applyWindow(startDefault);
+  });
+})();
+
+// 日电量矩阵：默认聚焦最近 12 天数据 + 拖动条横向查看全部历史
+(function focusDailyTable(){
+  const wrap=document.querySelector('.daily-wrap');
+  const tbl=wrap?.querySelector('.daily-table');
+  if(!wrap||!tbl) return;
+  const slider=document.getElementById('dailyTable-nav');
+  const label=document.getElementById('dailyTable-range');
+  const btn=document.querySelector('[data-reset="dailyTable"]');
+
+  const getDateThs=()=>[...tbl.querySelectorAll('thead th')].filter(t=>/^[0-9]{2}-[0-9]{2}$/.test(t.textContent.trim()));
+  const firstTh=()=>tbl.querySelector('thead th');
+  const lastTh=()=>tbl.querySelector('thead th:last-child');
+
+  function defaultScrollLeft(){
+    const dateThs=getDateThs();
+    if(dateThs.length<=12) return wrap.scrollWidth - wrap.clientWidth;
+    const twelfth=dateThs[dateThs.length-12];
+    return twelfth.offsetLeft - firstTh().offsetWidth;
+  }
+  function updateLabel(){
+    if(!label) return;
+    const dateThs=getDateThs();
+    const wRect=wrap.getBoundingClientRect();
+    const siteW=firstTh().getBoundingClientRect().width;
+    const lastW=lastTh().getBoundingClientRect().width;
+    // 完整可见 = 整列都在 [站点列右沿, 均值列左沿] 区间内，不被任何 sticky 列遮挡
+    const visible=dateThs.filter(t=>{
+      const r=t.getBoundingClientRect();
+      const x=r.x-wRect.x, right=r.right-wRect.x;
+      return x>=siteW-0.5 && right<=wRect.width-lastW+0.5;
+    });
+    if(!visible.length){ label.textContent='--'; return; }
+    label.textContent=visible[0].textContent.trim()+' ~ '+visible[visible.length-1].textContent.trim();
+  }
+  function syncSlider(){
+    const max=Math.max(0, wrap.scrollWidth - wrap.clientWidth);
+    if(slider){ slider.max=max; slider.value=wrap.scrollLeft; }
+    updateLabel();
+  }
+  function apply(){
+    wrap.scrollLeft=defaultScrollLeft();
+    syncSlider();
+  }
+  apply();
+  requestAnimationFrame(apply);
+
+  if(slider) slider.addEventListener('input',e=>{ wrap.scrollLeft=+e.target.value; updateLabel(); });
+  wrap.addEventListener('scroll',()=>{ if(slider) slider.value=wrap.scrollLeft; updateLabel(); });
+  if(btn) btn.addEventListener('click',()=>{ wrap.scrollLeft=defaultScrollLeft(); syncSlider(); });
+})();
+</script>
+</body>
+</html>
