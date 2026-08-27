@@ -14,6 +14,13 @@
 - 线上验证 ✅：xpeng-report-dashboard.pages.dev data.json 最新 = 2026-08-26（Cloudflare Pages 自动构建约 1-2 分钟）
 - 遗留已清零，本次自动化任务最终完整成功
 
+## 2026-08-27 11:27 全量重算同步
+- 历史数据导入后（raw 补全 40 天），批量重生成全部 38 份日报 HTML（参考日均改为 40 天完整历史）
+- deploy.py 同步：✅ 38 份日报全部更新，data.json 更新
+- git 提交：✅ 6d72f7a「更新全部日报：参考日均基于40天完整历史重算」40 files
+- git push：✅ 2471332..6d72f7a main -> main（代理正常）
+- 线上验证 ✅：xpeng-report-dashboard.pages.dev 8-26 日报 200，南大干线参考日均 2715度（新版特征确认）
+
 ## 经验
 - Windows 上 Git Bash 的 curl/git 默认 schannel TLS 后端，走代理失败时可用 `git -c http.sslBackend=openssl` 排查（本次两者都失败，定位为节点问题）
 - 判断节点故障方法：curl 走代理访问 http 明文（通）vs https（挂）→ 节点 TLS 层故障
