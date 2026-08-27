@@ -28,6 +28,11 @@ h2{font-size:20px;font-weight:600;margin:0 0 12px}
 .chart-card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:20px}
 .chart-card h3{margin:0 0 12px;font-size:16px;font-weight:600}
 .chart-card canvas{max-height:300px}
+.chart-nav{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)}
+.chart-nav input[type=range]{flex:1;accent-color:#0285ff;height:6px;cursor:pointer}
+.chart-nav .nav-btn{font-size:11px;padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);cursor:pointer;color:var(--ink);font-family:inherit;white-space:nowrap}
+.chart-nav .nav-btn:hover{background:var(--surface)}
+.chart-nav .range-label{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:88px;text-align:right}
 
 .section{margin:32px 0}
 table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
@@ -43,21 +48,51 @@ td{color:var(--ink)}
 .struct-table th:nth-child(1){width:18%}
 .struct-table th:nth-child(2){width:14%}
 .struct-table th:nth-child(n+3){width:17%}
-.daily-table th:nth-child(1){width:25%}.daily-table th:last-child{width:10%}
+/* daily-table: 横向滚动 + 首末列固定（fixed 布局强制撑开） */
+.daily-wrap{overflow-x:scroll;overflow-y:visible;scrollbar-gutter:stable}
+.daily-wrap::-webkit-scrollbar{height:14px;-webkit-appearance:none;background:var(--surface)}
+.daily-wrap::-webkit-scrollbar-track{background:var(--surface);border-radius:7px}
+.daily-wrap::-webkit-scrollbar-thumb{background:var(--tertiary);border-radius:7px;border:2px solid var(--surface);min-width:40px}
+.daily-wrap::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+.daily-wrap{scrollbar-width:thin;scrollbar-color:var(--tertiary) var(--surface)}
+.daily-table{table-layout:fixed;width:1390px;min-width:1390px;border-collapse:collapse}
+.daily-table th,.daily-table td{white-space:nowrap;padding:8px 6px}
+.daily-table th:nth-child(1),.daily-table td:nth-child(1){
+  position:sticky;left:0;z-index:2;background:var(--bg);
+  width:170px;min-width:170px;max-width:170px;
+  white-space:normal;font-weight:500
+}
+.daily-table th:last-child,.daily-table td:last-child{
+  position:sticky;right:0;z-index:2;background:var(--bg);
+  width:80px;min-width:80px;max-width:80px;font-weight:600;
+  box-shadow:-3px 0 8px rgba(0,0,0,.12)
+}
+/* 日期列固定 66px：可视区 1044px - 站点列 170 - 均值列 80 = 794px，794÷66 ≈ 12 列，完整显示最近 12 天 */
+.daily-table th:nth-child(n+2):not(:last-child),.daily-table td:nth-child(n+2):not(:last-child){
+  width:66px;min-width:66px;max-width:66px
+}
+.daily-table th:first-child{background:var(--surface);z-index:4;box-shadow:2px 0 6px rgba(0,0,0,.08)}
+.daily-table th:last-child{background:var(--surface);z-index:4}
 
 .core-table th:first-child,.core-table td:first-child,
-.struct-table th:first-child,.struct-table td:first-child,
-.daily-table th:first-child,.daily-table td:first-child{
+.struct-table th:first-child,.struct-table td:first-child{
   position:sticky;left:0;z-index:2;background:var(--bg)
 }
-.core-table th:first-child,.struct-table th:first-child,.daily-table th:first-child{
+.core-table th:first-child,.struct-table th:first-child{
   background:var(--surface);z-index:3
 }
 tr.summary td:first-child{background:var(--surface)}
 @media(prefers-color-scheme:dark){
-  .core-table td:first-child,.struct-table td:first-child,.daily-table td:first-child{background:var(--bg)}
-  .core-table th:first-child,.struct-table th:first-child,.daily-table th:first-child,
+  .core-table td:first-child,.struct-table td:first-child{background:var(--bg)}
+  .core-table th:first-child,.struct-table th:first-child,
   tr.summary td:first-child{background:var(--surface)}
+  .daily-table th:first-child,.daily-table td:first-child,
+  .daily-table th:last-child,.daily-table td:last-child{background:var(--bg)}
+  .daily-table th:first-child,.daily-table th:last-child,
+  tr.summary td:first-child{background:var(--surface)}
+  .daily-table th:first-child,.daily-table th:last-child,
+  .daily-table td:last-child{box-shadow:-2px 0 6px rgba(0,0,0,.5)}
+  .daily-table th:first-child{box-shadow:2px 0 6px rgba(0,0,0,.5)}
 }
 tr.summary td:not(:first-child){font-weight:600;background:var(--surface)}
 
@@ -111,10 +146,20 @@ tr.summary td:not(:first-child){font-weight:600;background:var(--surface)}
   <div class="chart-card">
     <h3>全部站点充电趋势（度）</h3>
     <canvas id="totalChart"></canvas>
+    <div class="chart-nav">
+      <button class="nav-btn" data-reset="totalChart">最近 7 天</button>
+      <input type="range" id="totalChart-nav" min="0" max="100" value="100">
+      <span class="range-label" id="totalChart-range">--</span>
+    </div>
   </div>
   <div class="chart-card">
     <h3>渠道分布趋势（度）</h3>
     <canvas id="channelChart"></canvas>
+    <div class="chart-nav">
+      <button class="nav-btn" data-reset="channelChart">最近 7 天</button>
+      <input type="range" id="channelChart-nav" min="0" max="100" value="100">
+      <span class="range-label" id="channelChart-range">--</span>
+    </div>
   </div>
 </div>
 
@@ -122,10 +167,20 @@ tr.summary td:not(:first-child){font-weight:600;background:var(--surface)}
   <div class="chart-card">
     <h3>枪均电量趋势（度/枪）</h3>
     <canvas id="perGunChart"></canvas>
+    <div class="chart-nav">
+      <button class="nav-btn" data-reset="perGunChart">最近 7 天</button>
+      <input type="range" id="perGunChart-nav" min="0" max="100" value="100">
+      <span class="range-label" id="perGunChart-range">--</span>
+    </div>
   </div>
   <div class="chart-card">
     <h3>结算服务费均价趋势（元/度）</h3>
     <canvas id="avgFeeChart"></canvas>
+    <div class="chart-nav">
+      <button class="nav-btn" data-reset="avgFeeChart">最近 7 天</button>
+      <input type="range" id="avgFeeChart-nav" min="0" max="100" value="100">
+      <span class="range-label" id="avgFeeChart-range">--</span>
+    </div>
   </div>
 </div>
 
@@ -140,13 +195,13 @@ tr.summary td:not(:first-child){font-weight:600;background:var(--surface)}
     </tr></thead>
     <tbody>
       <tr class="summary"><td>全部站点（汇总）（42枪）</td><td class="num" style="font-size:11px;color:var(--tertiary)">—</td><td class="num">11,422.369</td><td class="num">271.96</td><td class="num">0.2272</td><td class="num">—</td><td class="num">2594.85</td><td class="num">61.78</td></tr>
-      <tr><td>南大干线（4枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">2809度</td><td class="num">2,630.289</td><td class="num">657.57</td><td class="num">0.2579</td><td class="num">0.3967</td><td class="num">678.29</td><td class="num">169.57</td></tr>
-      <tr><td>恒兆广场（4枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1698度</td><td class="num">1,590.554</td><td class="num">397.64</td><td class="num">0.2341</td><td class="num">0.3602</td><td class="num">372.38</td><td class="num">93.09</td></tr>
-      <tr><td>时代天境（6枪·加盟90%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1101度</td><td class="num">1,166.59</td><td class="num">194.43</td><td class="num">0.2897</td><td class="num">0.3219</td><td class="num">337.99</td><td class="num">56.33</td></tr>
-      <tr><td>广花国际（6枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1966度</td><td class="num">1,661.608</td><td class="num">276.93</td><td class="num">0.1650</td><td class="num">0.2538</td><td class="num">274.15</td><td class="num">45.69</td></tr>
-      <tr><td>青创园（10枪·加盟90%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1994度</td><td class="num">1,889.416</td><td class="num">188.94</td><td class="num">0.2024</td><td class="num">0.2249</td><td class="num">382.43</td><td class="num">38.24</td></tr>
-      <tr><td>百事高（6枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1357度</td><td class="num">1,193.958</td><td class="num">198.99</td><td class="num">0.1749</td><td class="num">0.2691</td><td class="num">208.84</td><td class="num">34.81</td></tr>
-      <tr><td>超充时光启点（6枪·加盟90%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1745度</td><td class="num">1,289.954</td><td class="num">214.99</td><td class="num">0.2642</td><td class="num">0.2935</td><td class="num">340.77</td><td class="num">56.79</td></tr>
+      <tr><td>南大干线（4枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">2715度</td><td class="num">2,630.289</td><td class="num">657.57</td><td class="num">0.2579</td><td class="num">0.3967</td><td class="num">678.29</td><td class="num">169.57</td></tr>
+      <tr><td>恒兆广场（4枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1676度</td><td class="num">1,590.554</td><td class="num">397.64</td><td class="num">0.2341</td><td class="num">0.3602</td><td class="num">372.38</td><td class="num">93.09</td></tr>
+      <tr><td>时代天境（6枪·加盟90%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1518度</td><td class="num">1,166.59</td><td class="num">194.43</td><td class="num">0.2897</td><td class="num">0.3219</td><td class="num">337.99</td><td class="num">56.33</td></tr>
+      <tr><td>广花国际（6枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1855度</td><td class="num">1,661.608</td><td class="num">276.93</td><td class="num">0.1650</td><td class="num">0.2538</td><td class="num">274.15</td><td class="num">45.69</td></tr>
+      <tr><td>青创园（10枪·加盟90%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">2521度</td><td class="num">1,889.416</td><td class="num">188.94</td><td class="num">0.2024</td><td class="num">0.2249</td><td class="num">382.43</td><td class="num">38.24</td></tr>
+      <tr><td>百事高（6枪·共建65%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1560度</td><td class="num">1,193.958</td><td class="num">198.99</td><td class="num">0.1749</td><td class="num">0.2691</td><td class="num">208.84</td><td class="num">34.81</td></tr>
+      <tr><td>超充时光启点（6枪·加盟90%）</td><td class="num" style="font-size:11px;color:var(--tertiary)">1557度</td><td class="num">1,289.954</td><td class="num">214.99</td><td class="num">0.2642</td><td class="num">0.2935</td><td class="num">340.77</td><td class="num">56.79</td></tr>
     </tbody>
   </table>
   </div>
@@ -236,19 +291,24 @@ tr.summary td:not(:first-child){font-weight:600;background:var(--surface)}
 <div class="section">
   <h2>已读取日站点总电量</h2>
   <p style="color:var(--muted);margin:0 0 12px">站点为行、日期为列，末列为已读取日期均值。空白不代表 0 度。参考日均列即来源此表均值。</p>
-  <div style="overflow-x:auto">
+  <div class="chart-nav" style="margin:0 0 8px;padding-top:0;border-top:none">
+    <button class="nav-btn" data-reset="dailyTable">最近 12 天</button>
+    <input type="range" id="dailyTable-nav" min="0" max="100" value="100" aria-label="日电量表格横向滚动">
+    <span class="range-label" id="dailyTable-range">--</span>
+  </div>
+  <div class="daily-wrap">
   <table class="daily-table">
     <thead><tr>
-      <th>站点</th><th class="num">07-18</th><th class="num">07-19</th><th class="num">07-20</th><th class="num">07-21</th><th class="num">07-22</th><th class="num">07-23</th><th class="num">07-24</th><th class="num">07-25</th><th class="num">07-26</th><th class="num">07-27</th><th class="num">07-28</th><th class="num">均值</th>
+      <th>站点</th><th class="num">07-18</th><th class="num">07-19</th><th class="num">07-20</th><th class="num">07-21</th><th class="num">07-22</th><th class="num">07-23</th><th class="num">07-24</th><th class="num">07-25</th><th class="num">07-26</th><th class="num">07-27</th><th class="num">07-28</th><th class="num">07-29</th><th class="num">07-30</th><th class="num">07-31</th><th class="num">08-01</th><th class="num">08-02</th><th class="num">08-03</th><th class="num">08-04</th><th class="num">08-05</th><th class="num">08-06</th><th class="num">08-07</th><th class="num">08-08</th><th class="num">08-09</th><th class="num">08-10</th><th class="num">08-11</th><th class="num">08-12</th><th class="num">08-13</th><th class="num">08-14</th><th class="num">08-15</th><th class="num">08-16</th><th class="num">08-17</th><th class="num">08-18</th><th class="num">08-19</th><th class="num">08-20</th><th class="num">08-21</th><th class="num">08-22</th><th class="num">08-23</th><th class="num">08-24</th><th class="num">08-25</th><th class="num">08-26</th><th class="num">均值</th>
     </tr></thead>
     <tbody>
-      <tr><td>清源｜南大干线（4枪）</td><td class="num">2533.63</td><td class="num">2946.41</td><td class="num">2487.53</td><td class="num">2742.26</td><td class="num">2964.04</td><td class="num">2639.98</td><td class="num">3255.01</td><td class="num">3657.08</td><td class="num">2445.62</td><td class="num">2602.40</td><td class="num">2630.29</td><td class="num" style="font-weight:600">2809.48</td></tr>
-      <tr><td>清源｜恒兆广场（4枪）</td><td class="num">1619.48</td><td class="num">2016.20</td><td class="num">1672.67</td><td class="num">1720.13</td><td class="num">1566.73</td><td class="num">1645.26</td><td class="num">1883.85</td><td class="num">1836.65</td><td class="num">1485.00</td><td class="num">1641.73</td><td class="num">1590.55</td><td class="num" style="font-weight:600">1698.02</td></tr>
-      <tr><td>清源｜时代天境（6枪）</td><td class="num">1426.50</td><td class="num">1194.11</td><td class="num">1129.58</td><td class="num">1189.38</td><td class="num">1072.56</td><td class="num">826.75</td><td class="num">920.82</td><td class="num">1205.55</td><td class="num">770.89</td><td class="num">1204.12</td><td class="num">1166.59</td><td class="num" style="font-weight:600">1100.62</td></tr>
-      <tr><td>清源｜广花国际（6枪）</td><td class="num">2354.13</td><td class="num">1965.50</td><td class="num">1899.38</td><td class="num">1580.94</td><td class="num">1755.09</td><td class="num">2031.74</td><td class="num">1946.20</td><td class="num">2401.50</td><td class="num">1874.29</td><td class="num">2152.59</td><td class="num">1661.61</td><td class="num" style="font-weight:600">1965.72</td></tr>
-      <tr><td>清源｜青创园（10枪）</td><td class="num">2204.45</td><td class="num">2003.31</td><td class="num">1611.89</td><td class="num">1728.12</td><td class="num">1168.81</td><td class="num">1663.30</td><td class="num">2568.72</td><td class="num">2447.78</td><td class="num">2514.42</td><td class="num">2138.97</td><td class="num">1889.42</td><td class="num" style="font-weight:600">1994.47</td></tr>
-      <tr><td>清源｜百事高（6枪）</td><td class="num">1339.19</td><td class="num">1497.98</td><td class="num">1531.65</td><td class="num">1171.87</td><td class="num">1279.78</td><td class="num">1369.48</td><td class="num">1901.25</td><td class="num">1348.21</td><td class="num">813.39</td><td class="num">1479.94</td><td class="num">1193.96</td><td class="num" style="font-weight:600">1356.97</td></tr>
-      <tr><td>超充时光｜时光启点（6枪）</td><td class="num">1870.32</td><td class="num">2135.79</td><td class="num">1794.19</td><td class="num">1640.55</td><td class="num">1755.09</td><td class="num">1836.07</td><td class="num">1782.60</td><td class="num">2250.38</td><td class="num">1397.59</td><td class="num">1438.25</td><td class="num">1289.95</td><td class="num" style="font-weight:600">1744.62</td></tr>
+      <tr><td>清源｜南大干线（4枪）</td><td class="num">2533.63</td><td class="num">2946.41</td><td class="num">2487.53</td><td class="num">2742.26</td><td class="num">2964.04</td><td class="num">2639.98</td><td class="num">3255.01</td><td class="num">3657.08</td><td class="num">2445.62</td><td class="num">2602.40</td><td class="num">2630.29</td><td class="num">2331.89</td><td class="num">2514.99</td><td class="num">2774.97</td><td class="num">2947.14</td><td class="num">2662.98</td><td class="num">2556.78</td><td class="num">2603.94</td><td class="num">2562.51</td><td class="num">2715.19</td><td class="num">2834.28</td><td class="num">2635.47</td><td class="num">2855.44</td><td class="num">2753.34</td><td class="num">2947.52</td><td class="num">3050.89</td><td class="num">2995.82</td><td class="num">2924.40</td><td class="num">3034.20</td><td class="num">2674.32</td><td class="num">2583.56</td><td class="num">2386.70</td><td class="num">2877.53</td><td class="num">2936.13</td><td class="num">2919.17</td><td class="num">2706.59</td><td class="num">2541.65</td><td class="num">2069.11</td><td class="num">1864.54</td><td class="num">2448.21</td><td class="num" style="font-weight:600">2715.34</td></tr>
+      <tr><td>清源｜恒兆广场（4枪）</td><td class="num">1619.48</td><td class="num">2016.20</td><td class="num">1672.67</td><td class="num">1720.13</td><td class="num">1566.73</td><td class="num">1645.26</td><td class="num">1883.85</td><td class="num">1836.65</td><td class="num">1485.00</td><td class="num">1641.73</td><td class="num">1590.55</td><td class="num">1201.34</td><td class="num">1639.07</td><td class="num">1665.80</td><td class="num">1761.70</td><td class="num">1516.30</td><td class="num">1156.70</td><td class="num">1484.46</td><td class="num">1536.32</td><td class="num">1544.51</td><td class="num">1961.16</td><td class="num">1760.28</td><td class="num">1865.41</td><td class="num">2219.84</td><td class="num">1268.57</td><td class="num">1511.36</td><td class="num">1787.12</td><td class="num">1759.45</td><td class="num">2108.75</td><td class="num">1914.00</td><td class="num">1643.21</td><td class="num">1691.68</td><td class="num">1219.57</td><td class="num">1547.62</td><td class="num">2068.76</td><td class="num">1852.97</td><td class="num">1970.21</td><td class="num">1433.16</td><td class="num">1757.63</td><td class="num">1531.09</td><td class="num" style="font-weight:600">1676.41</td></tr>
+      <tr><td>清源｜时代天境（6枪）</td><td class="num">1426.50</td><td class="num">1194.11</td><td class="num">1129.58</td><td class="num">1189.38</td><td class="num">1072.56</td><td class="num">826.75</td><td class="num">920.82</td><td class="num">1205.55</td><td class="num">770.89</td><td class="num">1204.12</td><td class="num">1166.59</td><td class="num">1151.81</td><td class="num">1033.87</td><td class="num">1450.68</td><td class="num">1712.79</td><td class="num">896.29</td><td class="num">1377.81</td><td class="num">1221.05</td><td class="num">1428.27</td><td class="num">2041.74</td><td class="num">1535.39</td><td class="num">2269.05</td><td class="num">1752.87</td><td class="num">1852.47</td><td class="num">1540.13</td><td class="num">1696.92</td><td class="num">1902.61</td><td class="num">1427.62</td><td class="num">1994.34</td><td class="num">1900.18</td><td class="num">2170.63</td><td class="num">1771.54</td><td class="num">1709.94</td><td class="num">1719.68</td><td class="num">1787.42</td><td class="num">2121.13</td><td class="num">2400.08</td><td class="num">1646.00</td><td class="num">1579.10</td><td class="num">1541.61</td><td class="num" style="font-weight:600">1518.50</td></tr>
+      <tr><td>清源｜广花国际（6枪）</td><td class="num">2354.13</td><td class="num">1965.50</td><td class="num">1899.38</td><td class="num">1580.94</td><td class="num">1755.09</td><td class="num">2031.74</td><td class="num">1946.20</td><td class="num">2401.50</td><td class="num">1874.29</td><td class="num">2152.59</td><td class="num">1661.61</td><td class="num">1953.56</td><td class="num">1597.46</td><td class="num">1761.97</td><td class="num">1134.18</td><td class="num">1789.25</td><td class="num">1633.12</td><td class="num">1633.10</td><td class="num">1917.16</td><td class="num">1735.45</td><td class="num">2113.79</td><td class="num">1973.96</td><td class="num">1814.27</td><td class="num">2428.77</td><td class="num">2310.77</td><td class="num">1923.22</td><td class="num">2438.81</td><td class="num">2492.40</td><td class="num">640.90</td><td class="num">1877.47</td><td class="num">1903.74</td><td class="num">2015.08</td><td class="num">671.46</td><td class="num">1802.67</td><td class="num">2326.34</td><td class="num">1816.86</td><td class="num">1993.59</td><td class="num">2206.09</td><td class="num">415.43</td><td class="num">2253.06</td><td class="num" style="font-weight:600">1854.92</td></tr>
+      <tr><td>清源｜青创园（10枪）</td><td class="num">2204.45</td><td class="num">2003.31</td><td class="num">1611.89</td><td class="num">1728.12</td><td class="num">1168.81</td><td class="num">1663.30</td><td class="num">2568.72</td><td class="num">2447.78</td><td class="num">2514.42</td><td class="num">2138.97</td><td class="num">1889.42</td><td class="num">2149.48</td><td class="num">1811.60</td><td class="num">2214.79</td><td class="num">2991.66</td><td class="num">2996.70</td><td class="num">3322.14</td><td class="num">2408.32</td><td class="num">2823.61</td><td class="num">3181.14</td><td class="num">3034.08</td><td class="num">3193.90</td><td class="num">3001.92</td><td class="num">2966.76</td><td class="num">2573.16</td><td class="num">2656.91</td><td class="num">2635.90</td><td class="num">2758.00</td><td class="num">3163.90</td><td class="num">2534.01</td><td class="num">3028.27</td><td class="num">2627.64</td><td class="num">2445.01</td><td class="num">3001.26</td><td class="num">2825.55</td><td class="num">2784.40</td><td class="num">2751.45</td><td class="num">2618.68</td><td class="num">2107.93</td><td class="num">2276.08</td><td class="num" style="font-weight:600">2520.59</td></tr>
+      <tr><td>清源｜百事高（6枪）</td><td class="num">1339.19</td><td class="num">1497.98</td><td class="num">1531.65</td><td class="num">1171.87</td><td class="num">1279.78</td><td class="num">1369.48</td><td class="num">1901.25</td><td class="num">1348.21</td><td class="num">813.39</td><td class="num">1479.94</td><td class="num">1193.96</td><td class="num">1293.56</td><td class="num">1632.60</td><td class="num">1949.52</td><td class="num">1182.85</td><td class="num">756.69</td><td class="num">1289.16</td><td class="num">1216.45</td><td class="num">1621.57</td><td class="num">1350.43</td><td class="num">1884.98</td><td class="num">1695.43</td><td class="num">1932.12</td><td class="num">1500.27</td><td class="num">1809.77</td><td class="num">1824.34</td><td class="num">1418.69</td><td class="num">1890.33</td><td class="num">1820.28</td><td class="num">1815.33</td><td class="num">1825.16</td><td class="num">1650.60</td><td class="num">1683.10</td><td class="num">1423.57</td><td class="num">1800.10</td><td class="num">2155.46</td><td class="num">1894.82</td><td class="num">1790.67</td><td class="num">1618.40</td><td class="num">1755.70</td><td class="num" style="font-weight:600">1560.22</td></tr>
+      <tr><td>超充时光｜时光启点（6枪）</td><td class="num">1870.32</td><td class="num">2135.79</td><td class="num">1794.19</td><td class="num">1640.55</td><td class="num">1755.09</td><td class="num">1836.07</td><td class="num">1782.60</td><td class="num">2250.38</td><td class="num">1397.59</td><td class="num">1438.25</td><td class="num">1289.95</td><td class="num">1495.59</td><td class="num">1528.07</td><td class="num">1605.22</td><td class="num">1813.49</td><td class="num">1395.47</td><td class="num">1687.68</td><td class="num">1067.85</td><td class="num">1453.74</td><td class="num">1321.15</td><td class="num">1525.34</td><td class="num">1818.32</td><td class="num">1828.15</td><td class="num">1180.43</td><td class="num">1482.62</td><td class="num">1519.47</td><td class="num">1488.52</td><td class="num">1474.64</td><td class="num">1714.53</td><td class="num">1278.88</td><td class="num">1704.46</td><td class="num">1410.26</td><td class="num">1381.47</td><td class="num">1378.59</td><td class="num">1516.01</td><td class="num">1559.12</td><td class="num">1426.69</td><td class="num">1370.84</td><td class="num">1372.64</td><td class="num">1302.61</td><td class="num" style="font-weight:600">1557.32</td></tr>
     </tbody>
   </table>
   </div>
@@ -257,41 +317,125 @@ tr.summary td:not(:first-child){font-weight:600;background:var(--surface)}
 <div style="margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--tertiary);font-size:12px">
   公式校验: 9/9 |
   商户汇总: 2/2 |
-  生成时间: 2026-07-28T21:58:15.618Z
+  生成时间: 2026-08-27T03:24:06.750Z
 </div>
 </div>
 
 <script>
+const LABELS=["07-18","07-19","07-20","07-21","07-22","07-23","07-24","07-25","07-26","07-27","07-28","07-29","07-30","07-31","08-01","08-02","08-03","08-04","08-05","08-06","08-07","08-08","08-09","08-10","08-11","08-12","08-13","08-14","08-15","08-16","08-17","08-18","08-19","08-20","08-21","08-22","08-23","08-24","08-25","08-26"];
+const N=LABELS.length;
+const WIN=7;
+const startDefault=Math.max(0,N-WIN);
+const xRange={min:startDefault,max:N-1};
+
 new Chart(document.getElementById('totalChart'),{
   type:'line',data:{
-    labels:["07-18","07-19","07-20","07-21","07-22","07-23","07-24","07-25","07-26","07-27","07-28"],
-    datasets:[{label:'订单电量（度）',data:[13347.7,13759.3,12126.874000000002,11773.234,11562.095,12012.580999999998,14258.455,15147.14,11301.208000000002,12658.007000000001,11422.369],borderColor:'#0285ff',backgroundColor:'rgba(2,133,255,.1)',fill:true,tension:.3}]
-  },options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false}}}
+    labels:LABELS,
+    datasets:[{label:'订单电量（度）',data:[13347.7,13759.3,12126.874000000002,11773.234,11562.095,12012.580999999998,14258.455,15147.14,11301.208000000002,12658.007000000001,11422.369,11577.224000000002,11757.649,13422.941,13543.812000000002,12013.684000000001,13023.381999999998,11635.172999999999,13343.196,13889.618,14889.015000000001,15346.403,15050.184,14901.890999999998,13932.542000000001,14183.1,14667.464,14726.832,14476.895000000002,13994.201000000001,14859.029999999999,13553.487000000001,11988.081,13809.512,15243.344000000001,14996.518,14978.489,13134.535,10715.677,13108.357],borderColor:'#0285ff',backgroundColor:'rgba(2,133,255,.1)',fill:true,tension:.3}]
+  },options:{responsive:true,plugins:{legend:{display:false}},scales:{x:xRange,y:{beginAtZero:false}}}
 });
 
 new Chart(document.getElementById('channelChart'),{
   type:'line',data:{
-    labels:["07-18","07-19","07-20","07-21","07-22","07-23","07-24","07-25","07-26","07-27","07-28"],
+    labels:LABELS,
     datasets:[
-      {label:'小鹏渠道',data:[10196.61,10602.75,8999.878,8284.116,7739.6539999999995,8826.007,10107.529999999999,10396.59,8317.911,9425.323,7625.246],borderColor:'#0285ff',tension:.3,fill:false},
-      {label:'三方渠道',data:[3151.12,3156.5599999999995,3126.996,3489.118,3822.441,3186.5739999999996,4150.925,4750.549999999999,2983.297,3232.6839999999997,3797.123],borderColor:'#f59e0b',tension:.3,fill:false}
+      {label:'小鹏渠道',data:[10196.61,10602.75,8999.878,8284.116,7739.6539999999995,8826.007,10107.529999999999,10396.59,8317.911,9425.323,7625.246,8028.882,8455.983999999999,9548.432,9835.777000000002,8559.841999999999,8607.27,7552.036000000002,8926.435,8874.954,10008.719000000001,10437.872000000001,10759.04,10127.857,8792.617,9087.633,9387.682,9878.824,9731.464,10252.749,10183.123,8882.574,7978.945,9267.544,10213.7,10405.29,11296.7,9376.129,7659.36,8882.162],borderColor:'#0285ff',tension:.3,fill:false},
+      {label:'三方渠道',data:[3151.12,3156.5599999999995,3126.996,3489.118,3822.441,3186.5739999999996,4150.925,4750.549999999999,2983.297,3232.6839999999997,3797.123,3548.3420000000006,3301.665,3874.509,3708.0349999999994,3453.842,4416.112,4083.1369999999997,4416.7609999999995,5014.664,4880.296,4908.531,4291.143999999999,4774.034000000001,5139.925,5095.467000000001,5279.782,4848.008000000001,4745.431,3741.4519999999998,4675.907,4670.913,4009.136,4541.968,5029.643999999999,4591.228000000001,3681.7889999999998,3758.4059999999995,3056.3169999999996,4226.195],borderColor:'#f59e0b',tension:.3,fill:false}
     ]
-  },options:{responsive:true,scales:{y:{stacked:false}}}
+  },options:{responsive:true,plugins:{legend:{display:true}},scales:{x:xRange,y:{stacked:false}}}
 });
 
 new Chart(document.getElementById('perGunChart'),{
   type:'line',data:{
-    labels:["07-18","07-19","07-20","07-21","07-22","07-23","07-24","07-25","07-26","07-27","07-28"],
-    datasets:[{label:'枪均电量（度/枪）',data:[317.802380952381,327.60238095238094,288.73509523809525,280.31509523809524,275.2879761904762,286.0138333333333,339.4870238095238,360.64619047619044,269.076380952381,301.3811190476191,271.96116666666666],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',fill:true,tension:.3}]
-  },options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false}}}
+    labels:LABELS,
+    datasets:[{label:'枪均电量（度/枪）',data:[317.802380952381,327.60238095238094,288.73509523809525,280.31509523809524,275.2879761904762,286.0138333333333,339.4870238095238,360.64619047619044,269.076380952381,301.3811190476191,271.96116666666666,275.6481904761905,279.9440238095238,319.59383333333335,322.4717142857143,286.04009523809526,310.08052380952375,277.02792857142856,317.69514285714286,330.70519047619047,354.5003571428572,365.39054761904765,358.33771428571424,354.8069285714285,331.7271904761905,337.6928571428572,349.2253333333333,350.63885714285715,344.68797619047626,333.19526190476194,353.78642857142853,322.70207142857146,285.4305,328.79790476190476,362.9367619047619,357.0599523809524,356.63069047619047,312.7270238095238,255.13516666666666,312.1037380952381],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',fill:true,tension:.3}]
+  },options:{responsive:true,plugins:{legend:{display:false}},scales:{x:xRange,y:{beginAtZero:false}}}
 });
 
 new Chart(document.getElementById('avgFeeChart'),{
   type:'line',data:{
-    labels:["07-18","07-19","07-20","07-21","07-22","07-23","07-24","07-25","07-26","07-27","07-28"],
-    datasets:[{label:'结算均价（元/度）',data:[null,null,0.22564842349314423,0.24231235020046316,0.23730906898792997,0.22690377696516678,0.22825474429031756,0.2313208962219931,0.23009929557972914,0.22010574018484902,0.2271726644446524],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.1)',fill:true,tension:.3,spanGaps:true}]
-  },options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false}}}
+    labels:LABELS,
+    datasets:[{label:'结算均价（元/度）',data:[0.2488503637330776,0.2430319856388043,0.22564842349314423,0.24231235020046316,0.23730906898792997,0.22690377696516678,0.22825474429031756,0.2313208962219931,0.23009929557972914,0.22010574018484902,0.2271726644446524,0.22890634231487614,0.22338734554841708,0.22474806378125328,0.24560958170417604,0.23972246981025971,0.23838661877536882,0.23534415861285438,0.23808388934705,0.2442975753544842,0.23655359337068302,0.2430973564293861,0.24963548618408918,0.2394159237911484,0.23368599929574943,0.23963519963900698,0.24139960391244186,0.22135785890679,0.24527842468982466,0.23323232244556155,0.23050427921607272,0.2272418898546182,0.2421329986008603,0.2305164729933976,0.2320317641588355,0.23431572582382124,0.2407265512562716,0.2263726884887817,0.24056249549141878,0.22687664060415808],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.1)',fill:true,tension:.3,spanGaps:true}]
+  },options:{responsive:true,plugins:{legend:{display:false}},scales:{x:xRange,y:{beginAtZero:false}}}
 });
+
+(function setupChartNavs(){
+  const ids=['totalChart','channelChart','perGunChart','avgFeeChart'];
+  ids.forEach(id=>{
+    const chart=Chart.getChart(id);
+    if(!chart)return;
+    const slider=document.getElementById(id+'-nav');
+    const range=document.getElementById(id+'-range');
+    const btn=document.querySelector('[data-reset="'+id+'"]');
+    function applyWindow(startIdx){
+      const endIdx=Math.min(N-1,startIdx+WIN-1);
+      chart.options.scales.x.min=startIdx;
+      chart.options.scales.x.max=endIdx;
+      chart.update('none');
+      if(slider)slider.value=startIdx;
+      if(range)range.textContent=LABELS[startIdx]+' ~ '+LABELS[endIdx];
+    }
+    if(slider){
+      slider.min=0;
+      slider.max=Math.max(0,N-WIN);
+      slider.value=startDefault;
+      slider.addEventListener('input',e=>applyWindow(+e.target.value));
+    }
+    if(btn)btn.addEventListener('click',()=>applyWindow(startDefault));
+    applyWindow(startDefault);
+  });
+})();
+
+// 日电量矩阵：默认聚焦最近 12 天数据 + 拖动条横向查看全部历史
+(function focusDailyTable(){
+  const wrap=document.querySelector('.daily-wrap');
+  const tbl=wrap?.querySelector('.daily-table');
+  if(!wrap||!tbl) return;
+  const slider=document.getElementById('dailyTable-nav');
+  const label=document.getElementById('dailyTable-range');
+  const btn=document.querySelector('[data-reset="dailyTable"]');
+
+  const getDateThs=()=>[...tbl.querySelectorAll('thead th')].filter(t=>/^[0-9]{2}-[0-9]{2}$/.test(t.textContent.trim()));
+  const firstTh=()=>tbl.querySelector('thead th');
+  const lastTh=()=>tbl.querySelector('thead th:last-child');
+
+  function defaultScrollLeft(){
+    const dateThs=getDateThs();
+    if(dateThs.length<=12) return wrap.scrollWidth - wrap.clientWidth;
+    const twelfth=dateThs[dateThs.length-12];
+    return twelfth.offsetLeft - firstTh().offsetWidth;
+  }
+  function updateLabel(){
+    if(!label) return;
+    const dateThs=getDateThs();
+    const wRect=wrap.getBoundingClientRect();
+    const siteW=firstTh().getBoundingClientRect().width;
+    const lastW=lastTh().getBoundingClientRect().width;
+    // 完整可见 = 整列都在 [站点列右沿, 均值列左沿] 区间内，不被任何 sticky 列遮挡
+    const visible=dateThs.filter(t=>{
+      const r=t.getBoundingClientRect();
+      const x=r.x-wRect.x, right=r.right-wRect.x;
+      return x>=siteW-0.5 && right<=wRect.width-lastW+0.5;
+    });
+    if(!visible.length){ label.textContent='--'; return; }
+    label.textContent=visible[0].textContent.trim()+' ~ '+visible[visible.length-1].textContent.trim();
+  }
+  function syncSlider(){
+    const max=Math.max(0, wrap.scrollWidth - wrap.clientWidth);
+    if(slider){ slider.max=max; slider.value=wrap.scrollLeft; }
+    updateLabel();
+  }
+  function apply(){
+    wrap.scrollLeft=defaultScrollLeft();
+    syncSlider();
+  }
+  apply();
+  requestAnimationFrame(apply);
+
+  if(slider) slider.addEventListener('input',e=>{ wrap.scrollLeft=+e.target.value; updateLabel(); });
+  wrap.addEventListener('scroll',()=>{ if(slider) slider.value=wrap.scrollLeft; updateLabel(); });
+  if(btn) btn.addEventListener('click',()=>{ wrap.scrollLeft=defaultScrollLeft(); syncSlider(); });
+})();
 </script>
 </body>
 </html>
