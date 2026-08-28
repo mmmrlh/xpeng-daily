@@ -31,5 +31,8 @@
 2. 运行 deploy.py 同步新日报
 3. git add/commit/push 到 GitHub
    - ⚠️ git push 时需 unset 代理环境变量（`HTTP_PROXY`/`HTTPS_PROXY` 等），否则 ClashX 代理会干扰 TLS 握手导致 `SSL_ERROR_SYSCALL`
-   - credential 通过 macOS keychain (osxkeychain) 自动提供
-4. GitHub Pages 自动部署
+   - Mac：credential 通过 macOS keychain (osxkeychain) 自动提供
+   - **Windows（无人值守）**：默认 helper-selector/GCM 会弹交互窗口挂起，必须强制用 wincred：
+     `git -c http.proxy=http://127.0.0.1:7890 -c https.proxy=http://127.0.0.1:7890 -c credential.helper= -c credential.helper=wincred -c credential.interactive=false -c credential.modalPrompt=false push origin main`
+     （Windows 凭据管理器 target=git:https://github.com，用户 mmmrlh）
+4. GitHub Pages / Cloudflare Pages 自动部署（xpeng-report-dashboard.pages.dev 构建约 1 分钟生效）

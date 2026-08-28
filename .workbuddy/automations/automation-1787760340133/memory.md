@@ -21,7 +21,18 @@
 - git push：✅ 2471332..6d72f7a main -> main（代理正常）
 - 线上验证 ✅：xpeng-report-dashboard.pages.dev 8-26 日报 200，南大干线参考日均 2715度（新版特征确认）
 
+## 2026-08-28 06:40
+- deploy.py 同步：✅ 新增 08-27 日报，data.json 更新（39日报+2月报=41份）
+- git 提交：✅ fdd7bea「更新日报 2026-08-27」（3 files：日报 HTML + data.json + automation memory）
+- git push：⚠️ 首次挂起 7 分钟 — 根因是 PortableGit 默认 `credential.helper=helper-selector`（GCM），无人值守时弹交互窗口等待选择凭据助手
+  - 解决：`git -c credential.helper= -c credential.helper=wincred` 清空默认 helper 并直接用 Windows 凭据管理器（wincred 可读到 mmmrlh 凭据）；须加 `-c credential.interactive=false -c credential.modalPrompt=false` 防弹窗
+  - 推送成功：6d72f7a..fdd7bea main -> main（代理 7890 正常）
+- 线上验证 ✅：xpeng-report-dashboard.pages.dev data.json 最新 = 2026-08-27（构建约 1 分钟即生效，未等满 2 分钟）
+
 ## 经验
 - Windows 上 Git Bash 的 curl/git 默认 schannel TLS 后端，走代理失败时可用 `git -c http.sslBackend=openssl` 排查（本次两者都失败，定位为节点问题）
 - 判断节点故障方法：curl 走代理访问 http 明文（通）vs https（挂）→ 节点 TLS 层故障
 - mihomo 无 9090 控制 API（Clash Party 未启用），无法程序化切节点，需用户在客户端手动处理
+- ⚠️ Windows PortableGit 无人值守 push 的坑：credential.helper 默认是 helper-selector/GCM，会弹交互窗口挂起进程。标准推送命令应固定为：
+  `git -c http.proxy=http://127.0.0.1:7890 -c https.proxy=http://127.0.0.1:7890 -c credential.helper= -c credential.helper=wincred -c credential.interactive=false -c credential.modalPrompt=false push origin main`
+  （凭据存于 Windows 凭据管理器 target=git:https://github.com，用户 mmmrlh）
