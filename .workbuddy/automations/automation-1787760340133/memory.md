@@ -29,6 +29,12 @@
   - 推送成功：6d72f7a..fdd7bea main -> main（代理 7890 正常）
 - 线上验证 ✅：xpeng-report-dashboard.pages.dev data.json 最新 = 2026-08-27（构建约 1 分钟即生效，未等满 2 分钟）
 
+## 2026-08-29 06:40
+- deploy.py 同步：✅ 新增 08-28 日报，data.json 更新（40日报+2月报=42份）
+- git 提交：✅ 9a8aa17「更新日报 2026-08-28」（5 files：日报 HTML + data.json + 2 memory 文件 + automation memory）
+- git push：✅ 一次成功，fdd7bea..9a8aa17 main -> main（wincred 免弹窗命令正常，代理 7890 正常）
+- 线上验证 ✅：xpeng-report-dashboard.pages.dev data.json 最新 = 2026-08-28，共 42 份（构建约 75 秒内生效）
+
 ## 经验
 - Windows 上 Git Bash 的 curl/git 默认 schannel TLS 后端，走代理失败时可用 `git -c http.sslBackend=openssl` 排查（本次两者都失败，定位为节点问题）
 - 判断节点故障方法：curl 走代理访问 http 明文（通）vs https（挂）→ 节点 TLS 层故障
