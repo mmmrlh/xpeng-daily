@@ -41,6 +41,13 @@
 - git push：✅ 一次成功，9a8aa17..9969302 main -> main（wincred 免弹窗命令正常，代理 7890 正常）
 - 线上验证 ✅：xpeng-report-dashboard.pages.dev data.json 最新 = 2026-08-29，共 43 份（首次检查仍在构建显示 08-28，约 75 秒后构建完成生效）
 
+## 2026-08-31 06:40
+- deploy.py 同步：✅ 新增 08-30 日报，data.json 更新（42日报+2月报=44份）
+- git 提交：✅ d745058「更新日报 2026-08-30」（4 files：日报 HTML + data.json + 昨日遗留未提交的 2 个 memory 文件，一并提交清账）
+- git push：✅ 一次成功，9969302..d745058 main -> main（wincred 免弹窗命令正常，代理 7890 正常）
+- 线上验证 ✅：xpeng-report-dashboard.pages.dev data.json 最新 = 2026-08-30，共 44 份（首次轮询约 15 秒即构建完成生效，比历史更快）
+- 备注：昨日 08-30 执行遗留 2 个未提交 memory 文件（automation memory + 当日工作区日志），本次提交时一并带上；后续执行建议 memory 写入先于 git commit，避免跨日遗留
+
 ## 经验
 - Windows 上 Git Bash 的 curl/git 默认 schannel TLS 后端，走代理失败时可用 `git -c http.sslBackend=openssl` 排查（本次两者都失败，定位为节点问题）
 - 判断节点故障方法：curl 走代理访问 http 明文（通）vs https（挂）→ 节点 TLS 层故障
