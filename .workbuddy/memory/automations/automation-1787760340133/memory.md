@@ -2,6 +2,12 @@
 
 ## 执行历史
 
+### 2026-09-07（运行成功）
+- deploy.py：新增 小鹏运营日报_2026-09-06.html，data.json 更新（49 日报+2 月报=51 份）
+- git：有变更，commit `220e8a6` "更新日报 2026-09-06"（4 files，含 memory 日志）
+- push：清空 6 条代理环境变量后经 127.0.0.1:7890 推送成功（bd08c56..220e8a6），credential 用 wincred 无人值守
+- 验证：Cloudflare Pages data.json 最新日期 = 2026-09-06 ✅（等待约 50 秒后部署生效）
+
 ### 2026-09-06（运行成功）
 - deploy.py：新增 小鹏运营日报_2026-09-05.html，data.json 更新（48 日报+2 月报=50 份）
 - git：有变更，commit `bd08c56` "更新日报 2026-09-05"（3 files，含上次遗留的 automation memory.md 条目）
