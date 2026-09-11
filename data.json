@@ -71,6 +71,13 @@
       "sort_date": "2026-09-01"
     },
     {
+      "date": "2026-08",
+      "file": "小鹏8月运营月报.html",
+      "type": "monthly",
+      "label": "8月",
+      "sort_date": "2026-08-31.5"
+    },
+    {
       "date": "2026-08-31",
       "file": "小鹏运营日报_2026-08-31.html",
       "type": "daily",
