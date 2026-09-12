@@ -32,7 +32,11 @@
 3. git add/commit/push 到 GitHub
    - ⚠️ git push 时需 unset 代理环境变量（`HTTP_PROXY`/`HTTPS_PROXY` 等），否则 ClashX 代理会干扰 TLS 握手导致 `SSL_ERROR_SYSCALL`
    - Mac：credential 通过 macOS keychain (osxkeychain) 自动提供
-   - **Windows（无人值守）**：默认 helper-selector/GCM 会弹交互窗口挂起，必须强制用 wincred：
+   - **Windows（无人值守）首选方案（不依赖 Clash 代理，2026-09-12 实测可用）**：用 `~/.git-credentials`（store）提供凭据 + 直连 GitHub（不带 proxy）：
+     `git -c credential.helper= -c credential.helper=store -c credential.interactive=false -c credential.modalPrompt=false -c http.proxy= -c https.proxy= push origin main`
+     - 本机直连 GitHub 的 GET（ls-remote/fetch）与 POST（push）均正常，无需代理
+     - 全局 credential.helper = GCM（git-credential-manager.exe），无人值守下会弹窗挂起；必须用 `-c credential.helper= -c credential.helper=store` 覆盖
+   - 备选方案（需先确认 Clash 已启动、7890 在监听）：走本地代理 + wincred
      `git -c http.proxy=http://127.0.0.1:7890 -c https.proxy=http://127.0.0.1:7890 -c credential.helper= -c credential.helper=wincred -c credential.interactive=false -c credential.modalPrompt=false push origin main`
-     （Windows 凭据管理器 target=git:https://github.com，用户 mmmrlh）
+     - ⚠️ 2026-09-12 该方案因 7890 未运行而失败（`Failed to connect ... over proxy 127.0.0.1`）
 4. GitHub Pages / Cloudflare Pages 自动部署（xpeng-report-dashboard.pages.dev 构建约 1 分钟生效）
