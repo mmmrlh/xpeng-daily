@@ -2,6 +2,18 @@
 
 ## 执行历史
 
+### 2026-09-20（✅成功，但推送方式回退到代理）
+- deploy.py：新增 `小鹏运营日报_2026-09-19.html`（44.8 KB），data.json 更新为 **62 日报 + 3 月报 = 65 份**
+- git：有变更（data.json + 新日报 + memory，4 files，468 insertions），commit `9741d93`「更新日报 2026-09-19」
+- ❌ push：**直连方案首次失败** —— `fatal: unable to access 'https://github.com/mmmrlh/xpeng-daily.git/': Recv failure: Connection was reset`（github.com:443 被重置）。此前连续 8 天直连成功，本次起不再可靠
+- ✅ 回退走本地代理成功：先 `netstat | grep 7890 | grep LISTENING` 确认 Clash 在跑（127.0.0.1:7890 LISTENING, PID 3420），再执行
+  `git -c http.proxy=http://127.0.0.1:7890 -c https.proxy=http://127.0.0.1:7890 -c credential.helper= -c credential.helper=store -c credential.interactive=false -c credential.modalPrompt=false push origin main`
+  → `19367e5..9741d93`（凭据仍用 store，未用 wincred）
+- 验证：线上 data.json 最新日期 = **2026-09-19** ✅（HTTP 200，11180 bytes，65 条）；报告页 HTTP 200 / 44844 bytes，title `小鹏运营日报｜2026-09-19`
+- 校验：本地 HEAD 与 `git ls-remote origin main` 均为 `9741d93`，工作区干净
+- 📌 **建议**：后续仍按「先直连、失败即回退 7890」执行；回退前务必确认 7890 LISTENING
+- ⚠️ 环境小坑：本机 shell 的 `/tmp` 不可写（`head: cannot open '/tmp/live.json'`），curl 输出改存工作目录下的临时文件即可，验证后记得删除
+
 ### 2026-09-19（✅成功）
 - deploy.py：新增 `小鹏运营日报_2026-09-18.html`（44.5 KB，上游 06:03 生成），data.json 更新为 **61 日报 + 3 月报 = 64 份**
 - git：有变更（data.json + 新日报，2 files，448 insertions），commit `19367e5`「更新日报 2026-09-18」
