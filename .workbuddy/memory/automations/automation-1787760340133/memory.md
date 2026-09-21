@@ -2,6 +2,16 @@
 
 ## 执行历史
 
+### 2026-09-21（✅成功，直连恢复）
+- deploy.py：新增 `小鹏运营日报_2026-09-20.html`（45.2 KB / 441 行，上游 06:03 生成），data.json 更新为 **63 日报 + 3 月报 = 66 份**
+- git：有变更（data.json + 新日报 + 2 份 memory，4 files，471 insertions），commit `4b0dd80`「更新日报 2026-09-20」
+- ✅ push：**直连方案恢复成功**（store 凭据 + `-c http.proxy= -c https.proxy=`，未依赖 Clash/7890）：`9741d93..4b0dd80`
+  - 📌 昨天（9-20）直连曾失败一次、回退 7890；今天直连一次成功 → 直连仍是首选，失败再回退
+- 验证：线上 data.json 最新日期 = **2026-09-20** ✅（第 1 次轮询仍为 65/09-19，第 2 次轮询约 15 秒后生效，共 66 条，HTTP 200）
+- 验证：报告页 HTTP 200 / 45153 bytes，title `小鹏运营日报｜2026-09-20` ✅
+- 校验：本地 HEAD 与 `git ls-remote origin main` 均为 `4b0dd80`，工作区干净
+- ⚠️ 小坑：报告页 URL 直接 curl 返回 **308 重定向**（Cloudflare Pages 去掉 `.html` 后缀），需加 `-L` 跟随才得 200
+
 ### 2026-09-20（✅成功，但推送方式回退到代理）
 - deploy.py：新增 `小鹏运营日报_2026-09-19.html`（44.8 KB），data.json 更新为 **62 日报 + 3 月报 = 65 份**
 - git：有变更（data.json + 新日报 + memory，4 files，468 insertions），commit `9741d93`「更新日报 2026-09-19」
