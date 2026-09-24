@@ -2,6 +2,19 @@
 
 ## 执行历史
 
+### 2026-09-24（✅成功，直连失败后回退 7890 代理）
+- deploy.py：新增 `小鹏运营日报_2026-09-23.html`（46,072 bytes，上游 06:03 生成），data.json 更新为 **66 日报 + 3 月报 = 69 份**
+- git：有变更（data.json + 新日报 + 2 份 memory，4 files，467 insertions），commit `4908c9d`「更新日报 2026-09-23」
+- ❌ push：**直连方案失败** —— `fatal: unable to access 'https://github.com/mmmrlh/xpeng-daily.git/': Recv failure: Connection was reset`（github.com:443 被重置）
+- ✅ 回退走本地代理成功：先 `netstat | grep 7890 | grep LISTENING` 确认 Clash 在跑（127.0.0.1:7890 LISTENING, PID 60480），再执行
+  `git -c http.proxy=http://127.0.0.1:7890 -c https.proxy=http://127.0.0.1:7890 -c credential.helper= -c credential.helper=store -c credential.interactive=false -c credential.modalPrompt=false push origin main`
+  → `d69e8cc..4908c9d`（凭据用 store）
+- 验证：线上 data.json 最新日期 = **2026-09-23** ✅（等待 50 秒后首个轮询即生效，共 69 份，HTTP 200 / 11,868 bytes）
+- 验证：报告页 HTTP 200 / 46,072 bytes，title `小鹏运营日报｜2026-09-23` ✅（仍需 `-L` 跟随 308）
+- 校验：本地 HEAD 与 `git ls-remote origin main` 均为 `4908c9d`，工作区干净
+- 📌 直连方案在连续 3 天成功（9-21~9-23）后今日再次被重置；「先直连、失败即回退 7890（回退前确认 LISTENING）」策略继续有效
+- ⚠️ 小坑：`curl -o /dev/null -w SIZE` 首次返回 SIZE:0（疑似瞬时），重试即得 46,072 bytes；验证报告页时如遇 SIZE:0 请重试一次
+
 ### 2026-09-23（✅成功，直连一次成功）
 - deploy.py：新增 `小鹏运营日报_2026-09-22.html`（45,762 bytes，上游正常产出），data.json 更新为 **65 日报 + 3 月报 = 68 份**
 - git：有变更（data.json + 新日报 + 2 份 memory，4 files，467 insertions），commit `d69e8cc`「更新日报 2026-09-22」
