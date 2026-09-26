@@ -2,6 +2,15 @@
 
 ## 执行历史
 
+### 2026-09-26（✅成功，直连一次成功）
+- deploy.py：新增 `小鹏运营日报_2026-09-25.html`（46,674 bytes / 441 行），data.json 更新为 **68 日报 + 3 月报 = 71 份**
+- git：有变更（data.json + 新日报，2 files，448 insertions），commit `5f79486`「更新日报 2026-09-25」
+- ✅ push：**直连方案一次成功**（store 凭据 + `-c http.proxy= -c https.proxy=`，未依赖 Clash/7890）：`ac5b05f..5f79486`
+- 验证：线上 data.json 最新日期 = **2026-09-25** ✅（等待 50 秒后首个轮询即生效，共 71 份，HTTP 200 / 12,212 bytes）
+- 验证：报告页 HTTP 200 / 46,674 bytes，title `小鹏运营日报｜2026-09-25` ✅（需 `-L` 跟随 308）
+- 校验：本地 HEAD 与 `git ls-remote origin main` 均为 `5f79486`，工作区干净（临时文件已清理）
+- 📌 直连连续 2 天一次成功（9-25、9-26）；上游连续正常产出
+
 ### 2026-09-25（✅成功，直连一次成功）
 - deploy.py：新增 `小鹏运营日报_2026-09-24.html`（46,373 bytes / 441 行），data.json 更新为 **67 日报 + 3 月报 = 70 份**
 - git：有变更（data.json + 新日报 + 2 份 memory，4 files，471 insertions），commit `05b6250`「更新日报 2026-09-24」
