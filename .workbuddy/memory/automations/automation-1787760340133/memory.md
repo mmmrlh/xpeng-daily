@@ -2,14 +2,13 @@
 
 ## 执行历史
 
-### 2026-10-09（✅推送成功；⏳Cloudflare Pages 缓存滞后未生效）
+### 2026-10-09（✅最终成功；中途 Pages 漏构建，空提交触发重建解决）
 - deploy.py：🆕 新增 `小鹏运营日报_2026-10-08.html`，data.json 更新为 **81 日报 + 4 月报 = 85 份**（最新 2026-10-08）
-- git：有变更（data.json + 新日报，2 files，448 insertions），commit `8ccb9a0`「更新日报 2026-10-08」
-- ✅ push：**直连方案一次成功**（store 凭据 + `-c http.proxy= -c https.proxy=`，未依赖 Clash/7890）：`d54411a..8ccb9a0`
-- ✅ **GitHub 侧已确认同步**：`raw.githubusercontent.com/mmmrlh/xpeng-daily/main/data.json` = **85 条 / 最新 2026-10-08**；`git ls-remote origin main` = `8ccb9a0`，工作区干净
-- ⏳ **Pages 验证未通过**：`xpeng-report-dashboard.pages.dev/data.json` 在整个运行窗口（约 22 分钟、多轮轮询 + 绕缓存参数）持续返回 **84 条 / 2026-10-07**（HTTP 200，`Cache-Control: public, max-age=0, must-revalidate`）→ **CDN 传播/构建滞后**，非代码或推送问题；预计稍后自动生效
-- ⚠️ 运行中出现一次 `git ls-remote` 被 reset（瞬时网络波动），约 1 分钟后重试即恢复 200
-- 📌 建议：后续验证时若 GitHub raw 已是新数据而 Pages 仍为旧，可判定为 Pages 侧滞后，无需重复推送
+- git：commit `8ccb9a0`「更新日报 2026-10-08」，✅ 直连推送一次成功：`d54411a..8ccb9a0`
+- ⚠️ **Pages 漏构建**：06:40 推送后 2.5 小时 Pages 仍为 84/10-07（ETag 不变、10-08 报告页软 404 返回 index.html）→ GitHub raw 已是 85/10-08，确认 Cloudflare 没构建该次推送
+- ✅ **解决**：09:07 用户询问时复查发现，推空提交 `643e1d2`「触发 Pages 重建（10-08 部署未生效）」→ **约 2.5 分钟后 Pages 生效：85 条 / 2026-10-08 ✅**（首个轮询即通过）
+- 📌 **关键经验（替代旧的"死等"策略）**：验证时若 GitHub raw 已是新数据而 Pages 仍旧**超过约 30 分钟**，判定为 Pages 漏构建，直接推一个空提交（含任意 memory 更新即可）触发重建，约 2-3 分钟生效；无需登录 Cloudflare 后台
+- 校验：本地 HEAD = `643e1d2` = 远程，工作区干净
 
 ### 2026-10-08 补同步（人工触发「同步一下」，✅成功，直连一次成功）
 - 背景：09:02 自动运行无新日报（上游当时未产出 10-07）；09:09 用户手动触发后成功
