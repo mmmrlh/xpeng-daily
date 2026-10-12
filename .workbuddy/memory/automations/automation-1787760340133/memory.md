@@ -2,6 +2,22 @@
 
 ## 执行历史
 
+### 2026-10-12（⚠️无新日报，未提交未推送；上游未产出 10-11 日报）
+- deploy.py：**没有新日报/月报需要同步** —— data.json 仍 **83 日报 + 4 月报 = 87 份**，最新 2026-10-10（与昨日相同）
+- git：`git add .` 后暂存区**仅 memory 文档变更**（`.workbuddy/memory/2026-10-11.md` 新增 + 本 automation memory.md 修改），**无任何日报内容变更** → 按规则 `git reset` 取消暂存，跳过提交与推送
+- ⚠️ **根因**：上游源目录 `小鹏迁移包-Windows/小鹏运营日报/outputs/` 最新 HTML 仍是 `小鹏运营日报_2026-10-10.html`（生成时间 **2026-10-11 06:03**）；**10-11 当天的日报未生成** → 上游采集/生成流程今日未产出，需人工检查
+- 验证：线上 https://xpeng-report-dashboard.pages.dev/data.json（unset 6 条代理变量后 curl，加 `?t=` 时间戳绕缓存）HTTP 200 / 14,957 bytes，共 **87 条**，最新日期 = **2026-10-10** → **非昨天 2026-10-11**
+- 校验：本地 HEAD = `a2da3b1` = 远程 `refs/heads/main`（昨日推送的「更新日报 2026-10-10」）；工作区干净（临时文件 live_check.json 已清理）
+- 📌 与 9-13/9-14/10-01/10-08 情况相同：无新日报时不 push 是正确的，无需任何代码改动
+
+### 2026-10-11（✅成功，直连一次成功，Pages 约 50 秒生效）
+- deploy.py：🆕 新增 `小鹏运营日报_2026-10-10.html`（51,252 bytes，上游 10-11 06:03 生成），data.json 更新为 **83 日报 + 4 月报 = 87 份**（最新 2026-10-10）
+- git：有变更（data.json + 新日报，2 files，448 insertions），commit `a2da3b1`「更新日报 2026-10-10」
+- ✅ push：**直连方案一次成功**（store 凭据 + `-c http.proxy= -c https.proxy=`，未依赖 Clash/7890）：`a7e64bb..a2da3b1`
+- 验证：线上 data.json 最新日期 = **2026-10-10** ✅（第 1 次轮询仍为 86/10-09，第 2 次轮询（+50 秒）生效，共 87 条，HTTP 200 / 14,957 bytes）；报告页 HTTP 200 / 51,252 bytes ✅
+- 校验：本地 HEAD = `a2da3b1` = 远程 `refs/heads/main`，工作区干净（临时文件 live_check.json 已清理）
+- 📌 上游正常产出（10-11 06:03）；今日未遇 GitHub 直连抖动，Pages 构建一次到位
+
 ### 2026-10-10（✅成功，直连一次成功，Pages 约 70 秒生效）
 - deploy.py：🆕 新增 `小鹏运营日报_2026-10-09.html`（50,943 bytes，上游 10-10 06:03 生成），data.json 更新为 **82 日报 + 4 月报 = 86 份**（最新 2026-10-09）
 - git：有变更（data.json + 新日报 + 2 份 memory，4 files，462 insertions / 7 deletions），commit `5a74c8f`「更新日报 2026-10-09」
