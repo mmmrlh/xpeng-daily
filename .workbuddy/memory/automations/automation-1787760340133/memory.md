@@ -2,6 +2,15 @@
 
 ## 执行历史
 
+### 2026-10-15（✅成功，直连首推被重置、重试成功，Pages 约 45 秒生效）
+- deploy.py：🆕 新增 `小鹏运营日报_2026-10-14.html`（52,475 bytes，上游 2026-10-15 06:03 生成），data.json 更新为 **87 日报 + 4 月报 = 91 份**（最新 2026-10-14）
+- git：有变更（data.json + 新日报 + 2 份 memory，4 files，464 insertions），commit `ca7c13a`「更新日报 2026-10-14」
+- ⚠️ push：**直连首推失败** —— `fatal: unable to access 'https://github.com/mmmrlh/xpeng-daily.git/': Recv failure: Connection was reset`；**间隔 5 秒重试后直连成功**：`a1f3f0d..ca7c13a`（未启用 7890 回退）
+- 验证：线上 data.json 最新日期 = **2026-10-14** ✅（第 1 次轮询仍为 90/10-13，第 2 次轮询（+45 秒）生效，共 91 条，HTTP 200 / 15,645 bytes）；报告页 HTTP 200 / 52,475 bytes ✅
+- 校验：本地 HEAD = 远程 `refs/heads/main` = `ca7c13a`，工作区干净（临时文件 live_check.json 已清理）
+- 📌 复现 10-10 的经验：GitHub 直连存在秒级抖动 → **push 失败先重试 1-2 次再判定失败**，本次未触发代理回退
+- 📌 上游正常产出（10-15 06:03）
+
 ### 2026-10-14（✅成功，直连一次成功，Pages 约 45 秒生效）
 - deploy.py：🆕 新增 `小鹏运营日报_2026-10-13.html`，data.json 更新为 **86 日报 + 4 月报 = 90 份**（最新 2026-10-13）
 - git：有变更（data.json + 新日报，2 files，448 insertions），commit `a1f3f0d`「更新日报 2026-10-13」
