@@ -2,6 +2,14 @@
 
 ## 执行历史
 
+### 2026-10-18（✅成功，直连一次成功，Pages 一次通过）
+- deploy.py：🆕 新增 `reports/小鹏运营日报_2026-10-17.html`（53,397 bytes），data.json 更新为 **90 日报 + 4 月报 = 94 份**（最新 2026-10-17）
+- git：有变更（data.json + 新日报 + 2 份 memory，4 files，468 insertions / 19 deletions），commit `a021f8f`「更新日报 2026-10-17」
+- ✅ push：**直连方案一次成功**（store 凭据 + `-c http.proxy= -c https.proxy=`，未依赖 Clash/7890）：`7a5bbd4..a021f8f`
+- 验证：线上 data.json 最新日期 = **2026-10-17** ✅（等待 45 秒后首个轮询即生效，HTTP 200 / 16,161 bytes / 94 条）；报告页 HTTP 200 / 53,397 bytes（与本地完全一致）✅
+- 校验：本地 HEAD = 远程 `refs/heads/main` = `a021f8f`，工作区干净（临时文件 live_check.json 已清理）
+- 📌 上游恢复正常（10-17 日报正常产出，含 enriched.json / PNG / summary.md）；昨日 Security Center 拦截问题未复现
+
 ### 2026-10-17 补同步（人工触发，✅成功，直连一次成功，Pages 一次通过）
 - 背景：06:40 自动运行时无新日报（上游未产出）；10:22~10:24 三次手动触发均被安全策略拦截；10:28 用户处理权限后再触发，成功
 - 上游：`小鹏运营日报_2026-10-16.html`（53,093 bytes）已由上游生成
