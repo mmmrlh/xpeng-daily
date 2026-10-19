@@ -2,6 +2,13 @@
 
 ## 执行历史
 
+### 2026-10-19 10-18 补同步（✅重启后成功，commit 1c37a07）
+- 09:00 自动化与 09:10/09:34 两次手动触发均被 WorkBuddy Security Center 拦截（D:\workbuddy 下所有文件对子进程读写全禁，settings.json 规则正常、workspace trusted → 运行时/威胁库拦截，威胁库 20261018 版 10-18 22:12 生效）。排查与绕行记录见 `.workbuddy/memory/2026-10-19.md`。**重启 WorkBuddy 即恢复**（与 10-17 同故障同解法）
+- 10:02 用户重启后重跑：deploy.py 🆕 `小鹏运营日报_2026-10-18.html`（53,392 bytes），data.json → **95 份**（91 日报 + 4 月报），最新 2026-10-18
+- git commit `1c37a07`「更新日报 2026-10-18」；push **直连一次成功**（unset 代理 + store 凭据，无回退）
+- 验证：GitHub Pages 即时 95/10-18 ✅；pages.dev 构建约 4-5 分钟生效，期间短暂返回旧数据（65 份/09-19，构建切换瞬间），复查后 **95 份 / 最新 2026-10-18** ✅
+- 📌 经验：① 遇 Security Center 全拦截 → 重启 WorkBuddy，别浪费时间绕行；② pages.dev 刚构建完可能返回不一致旧内容，验证可疑时等 2-3 分钟用新 query 参数复查
+
 ### 2026-10-19 补同步（⚠️失败：Security Center 全面拦截 D:\workbuddy\ 读取，未提交未推送）
 - 上游可用：`小鹏运营日报_2026-10-18.html`（53,392 bytes）已于 **2026-10-19 08:47** 由上游生成 ✅
 - ❌ deploy.py 无法运行：`Permission denied` / `Blocked by Security Center rules: read ...deploy.py`
