@@ -2,6 +2,15 @@
 
 ## 执行历史
 
+### 2026-10-20（✅成功，直连一次成功，Pages 约 40 秒生效）
+- 上游正常产出：`小鹏运营日报_2026-10-19.html`（53,990 bytes，10-20 06:03 生成）
+- deploy.py：🆕 新增 1 份，data.json → **92 日报 + 4 月报 = 96 份**（最新 2026-10-19）
+- git：有变更（data.json + 新日报 + 2 份 memory，4 files，464 insertions），commit `d7cfeac`「更新日报 2026-10-19」
+- ✅ push：**直连一次成功**（unset 6 条代理 + store 凭据，未依赖 Clash）：`1c37a07..d7cfeac`，无回退
+- 验证：线上 data.json 最新 = **2026-10-19** ✅（HTTP 200 / 16,505 bytes / 96 条，等待 40 秒首个轮询即生效）；报告页 HTTP 200 / 53,990 bytes，title `小鹏运营日报｜2026-10-19` ✅
+- 校验：本地 HEAD = 远程 `refs/heads/main` = `d7cfeac`，工作区干净（临时文件已清理）
+- 📌 昨日 Security Center 拦截故障未复现；上游恢复常规 06:03 产出节奏
+
 ### 2026-10-19 10-18 补同步（✅重启后成功，commit 1c37a07）
 - 09:00 自动化与 09:10/09:34 两次手动触发均被 WorkBuddy Security Center 拦截（D:\workbuddy 下所有文件对子进程读写全禁，settings.json 规则正常、workspace trusted → 运行时/威胁库拦截，威胁库 20261018 版 10-18 22:12 生效）。排查与绕行记录见 `.workbuddy/memory/2026-10-19.md`。**重启 WorkBuddy 即恢复**（与 10-17 同故障同解法）
 - 10:02 用户重启后重跑：deploy.py 🆕 `小鹏运营日报_2026-10-18.html`（53,392 bytes），data.json → **95 份**（91 日报 + 4 月报），最新 2026-10-18
