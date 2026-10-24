@@ -2,6 +2,14 @@
 
 ## 执行历史
 
+### 2026-10-25 07:30（⚠️同步+提交成功，推送失败：GitHub 443 不通，Clash 未运行）
+- 上游正常产出 `小鹏运营日报_2026-10-24.html`（55,525 bytes，06:03 生成）
+- deploy.py：🆕 新增 1 份，data.json → **97 日报 + 4 月报 = 101 份**（最新 2026-10-24）
+- git：commit `aedc90b`「更新日报 2026-10-24」（3 files，456 insertions）
+- ❌ push 失败：直连 3 次全败（`Connection was reset` ×2、`Failed to connect after 21s` ×1，间隔 6s/10s）；`curl https://github.com` HTTP:000 超时 15s；127.0.0.1:7890/7897/10808 均无 LISTENING（Clash 未运行）→ 回退方案不可用
+- 验证：线上 data.json HTTP 200 / 100 条 / **最新 2026-10-23** → 非昨天，部署未发生（符合推送失败预期）
+- 📌 网络自 10-22 起持续不稳定（10-24 直连曾一次成功，今日全失败）；网络恢复后单独 push `aedc90b` 即可，不要重跑 deploy.py
+
 ### 2026-10-24 07:30（✅全部成功，直连一次成功）
 - deploy.py：🆕 新增 1 份 `小鹏运营日报_2026-10-23.html`（55,208 bytes）；同时**更新**了 10-21、10-22 两份历史日报（上游回填修订内容），data.json → **96 日报 + 4 月报 = 100 份**
 - commit `20b430f`「更新日报 2026-10-23」（6 files，487 insertions / 23 deletions）
