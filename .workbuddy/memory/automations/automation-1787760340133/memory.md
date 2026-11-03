@@ -2,6 +2,14 @@
 
 ## 执行历史
 
+### 2026-11-04 07:30（✅全部成功，直连首推失败 → **重试 1 次成功**）
+- deploy.py：🆕 新增 `小鹏运营日报_2026-11-03.html`（58,569 bytes，上游 11-04 06:03 生成），data.json → **107 日报 + 5 月报 = 112 份**（最新 2026-11-03）
+- git：变更 4 files（data.json + 新日报 + 2 份 memory），462 insertions；commit `05b7caa`「更新日报 2026-11-03」
+- ⚠️ 直连首推失败：`Failed to connect to github.com:443 after 21057 ms`；间隔 8s 重试**直连成功** `5be04ff..05b7caa`（未用 7890 回退）
+- 验证：线上 data.json 加 `nocache` + 禁缓存头，等 50s **第 1 次轮询即生效** → 112 条 / 最新 2026-11-03 ✅；报告页 `curl -L` HTTP 200 / **58,569 bytes（与本地一致）** / `<title>小鹏运营日报｜2026-11-03</title>` ✅
+- 📌 本地 HEAD = 远程 `refs/heads/main` = `05b7caa`（`ls-remote` 首查 443 超时，间隔 6s 重试成功）；工作区干净
+- 📌 上游恢复常规 06:03 产出，无缺日报
+
 ### 2026-11-03 07:30（✅全部成功，**直连一次成功**）
 - deploy.py：🆕 新增 `小鹏运营日报_2026-11-02.html`（58,249 bytes，上游 11-03 06:03 生成），data.json → **106 日报 + 5 月报 = 111 份**（最新 2026-11-02）
 - git：变更 4 files（data.json + 新日报 + 2 份 memory），464 insertions / 1 deletion；commit `5be04ff`「更新日报 2026-11-02」
