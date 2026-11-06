@@ -2,6 +2,15 @@
 
 ## 执行历史
 
+### 2026-11-07 07:30（⚠️同步+提交成功，**推送失败：GitHub 443 不通，Clash 未运行**）
+- deploy.py：🆕 新增 `小鹏运营日报_2026-11-06.html`（59,518 bytes，上游 11-07 06:03 生成），data.json → **110 日报 + 5 月报 = 115 份**（最新 2026-11-06）
+- git：变更 4 files（data.json + 新日报 + 2 份 memory），463 insertions；commit `af8e331`「更新日报 2026-11-06」**仅落地本地**
+- ❌ 直连 push **3 次全败**：`Connection was reset`（首次）+ `Failed to connect after 21120 ms` ×2（间隔 8s / 15s 重试）
+- ❌ 回退不可用：`netstat` 查 7890/7897 **无 LISTENING**（Clash 未运行）；`curl https://github.com` **HTTP:000**（exit 28 超时）→ 判定出口网络问题，非 git 配置
+- 验证：线上 data.json（unset 6 代理 + nocache + 禁缓存头）HTTP 200 / 19,596 bytes / **114 条 / 最新 2026-11-05** → 非昨天 11-06，部署未发生（符合预期）
+- 📌 **本地有 1 个未推送提交 `af8e331`**，网络恢复后**只需单独 push**，勿重跑 deploy.py 或重新提交
+- 📌 与前几日「首推重置→重试成功」不同：本次连 `curl github.com` 也超时，属出口不通，重试无意义；Clash 需手动启动，否则只能等网络自愈
+
 ### 2026-11-06 07:30（✅全部成功，直连首推被重置 → **重试 1 次成功**）
 - deploy.py：🆕 新增 `小鹏运营日报_2026-11-05.html`（59,189 bytes），data.json → **109 日报 + 5 月报 = 114 份**（最新 2026-11-05）
 - git：变更 4 files（data.json + 新日报 + 2 份 memory），462 insertions；commit `b972dfe`「更新日报 2026-11-05」
