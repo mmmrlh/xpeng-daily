@@ -2,6 +2,13 @@
 
 ## 执行历史
 
+### 2026-11-06 07:30（✅全部成功，直连首推被重置 → **重试 1 次成功**）
+- deploy.py：🆕 新增 `小鹏运营日报_2026-11-05.html`（59,189 bytes），data.json → **109 日报 + 5 月报 = 114 份**（最新 2026-11-05）
+- git：变更 4 files（data.json + 新日报 + 2 份 memory），462 insertions；commit `b972dfe`「更新日报 2026-11-05」
+- ⚠️ 直连首推失败：`Recv failure: Connection was reset`；间隔 6s 重试**直连成功** `f77c4e8..b972dfe`（未用 7890 回退）
+- 验证：线上 data.json 加 `nocache` + 禁缓存头，等 50s **第 1 次轮询即生效** → 114 条 / 最新 2026-11-05 ✅；报告页 `curl -L` HTTP 200 / **59,189 bytes（与本地一致）** / `<title>小鹏运营日报｜2026-11-05</title>` ✅
+- 📌 本地 HEAD = 远程 `refs/heads/main` = `b972dfe`；工作区干净；上游常规产出，无缺日报
+
 ### 2026-11-05 07:30（✅全部成功，**直连一次成功**）
 - deploy.py：🆕 新增 `小鹏运营日报_2026-11-04.html`（58,887 bytes），data.json → **108 日报 + 5 月报 = 113 份**（最新 2026-11-04）
 - git：变更 2 files（data.json + 新日报），448 insertions；commit `f77c4e8`「更新日报 2026-11-04」
