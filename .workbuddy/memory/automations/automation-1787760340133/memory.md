@@ -2,6 +2,18 @@
 
 ## 执行历史
 
+### 2026-11-26 07:30（⚠️同步+提交+推送全部成功，**但 Cloudflare Pages 未构建，线上仍停在 11-24**）
+- 首查积压：本地 HEAD = 远程 `refs/heads/main` = `d1a81cd`「更新日报 2026-11-24」→ 无积压（11-25 的补推已生效）
+- deploy.py：🆕 新增 `小鹏运营日报_2026-11-25.html`（65,313 bytes，上游 11-26 06:03 生成），data.json → **129 日报 + 5 月报 = 134 份**（最新 2026-11-25）
+- git：变更 4 files，507 insertions；commit `8e7044e`「更新日报 2026-11-25」
+- ✅ 直连 push **一次成功**：`d1a81cd..8e7044e main -> main`（unset 6 条代理 + store 凭据，未走 7890）
+- ❌ **验证未通过**：`xpeng-report-dashboard.pages.dev/data.json` 连续轮询 **约 17 分钟（36 次）**，始终 HTTP 200 / 133 条 / 最新 **2026-11-24**，未变成 11-25
+  - 排查已排除：`raw.githubusercontent.com` = 134 条 / 最新 2026-11-25 ✅；GitHub API 提交时间 2026-11-25T23:31:41Z ✅；线上 index.html 与本地 md5 一致（16101 bytes），说明 Pages 仍在服务旧构建；响应头无 `cf-cache-status`/`age`，非 CDN 缓存命中问题
+  - 📌 判定：**Cloudflare Pages 侧构建未触发或构建失败**，非推送问题、非代码问题
+- ✅ **备用域名已生效**：`https://mmmrlh.github.io/xpeng-daily/` 的 data.json = 134 条 / 最新 2026-11-25；日报页 HTTP 200 / **65,313 bytes（与本地一致）**
+- 📌 待用户处理：登录 Cloudflare Dashboard → Pages → xpeng-report-dashboard → Deployments，看 11-25T23:31 那次提交是否有构建记录/失败原因（常见：GitHub App 授权掉线、构建分钟数用尽、分支配置被改）
+- 📌 **新教训**：推送成功后线上不更新时，**先用 `raw.githubusercontent.com` + `mmmrlh.github.io` 两路对比**，可快速区分「推送失败」与「Pages 构建失败」，不必盲目长轮询
+
 ### 2026-11-25 11:27（✅**已补推成功，凭据已修复**）
 - 用户在浏览器重新登录并生成新 PAT，投入修复
 - ⚠️ **踩坑 1**：用户第一次给的 token 属于 **`mmmrlh-luo`（已废弃账号）** → `permissions.push = False`，若直接用仍会失败
